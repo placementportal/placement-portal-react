@@ -1,6 +1,13 @@
+import { Outlet } from 'react-router-dom';
+
+import Navbar from '../Components/Student/Navbar';
+
 const StudentDashboard = () => {
   return (
-    <div>StudentDashboard</div>
-  )
-}
-export default StudentDashboard
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
+};
+export default StudentDashboard;
