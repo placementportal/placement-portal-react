@@ -15,8 +15,10 @@ import { store } from './store';
 
 import { action as loginAction } from './pages/Login';
 import { action as jobsAction } from './pages/Jobs';
+import { action as companyDBAction } from './pages/CompanyDashboard';
 
 import { loader as loginLoader } from './pages/Login';
+import { loader as companyDBLoader } from './pages/CompanyDashboard';
 import { loader as studentDBloader } from './pages/StudentDetails';
 import { loader as jobsLoader } from './pages/Jobs';
 
@@ -59,6 +61,8 @@ const router = createBrowserRouter([
   {
     path: '/company-dashboard',
     element: <CompanyDashboard />,
+    loader: companyDBLoader(queryClient, store),
+    action: companyDBAction(queryClient, store),
     children: [
       {
         path: 'jobs',

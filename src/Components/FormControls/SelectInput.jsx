@@ -1,4 +1,4 @@
-const SelectInput = ({ label, options, value, id, changeFn }) => {
+const SelectInput = ({ label, name, options, id, changeFn }) => {
   return (
     <div className="form-control w-full max-w-xs">
       <label className="label">
@@ -6,14 +6,15 @@ const SelectInput = ({ label, options, value, id, changeFn }) => {
       </label>
       <select
         className="select select-bordered"
-        value={value}
         id={id}
         onChange={changeFn}
+        name={name}
       >
         {options.map((option) => {
+          const { text, value } = option;
           return (
-            <option key={option} value={option} className="capitalize">
-              {option}
+            <option key={value} value={value} className="capitalize">
+              {text}
             </option>
           );
         })}

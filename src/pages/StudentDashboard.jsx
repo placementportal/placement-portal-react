@@ -1,11 +1,12 @@
 import { Outlet } from 'react-router-dom';
 
-import Navbar from '../Components/Student/Navbar';
+import Navbar from '../Components/Navbar';
+import { options } from '../Components/Student/NavOptions';
 
 const StudentDashboard = () => {
   return (
     <>
-      <Navbar />
+      <Navbar options={options} />
       <Outlet />
     </>
   );

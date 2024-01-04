@@ -1,13 +1,12 @@
-const FormInput = ({
+const DateInput = ({
   label,
   name,
-  type,
   defaultValue,
   size,
+  minDate,
   labelColor = 'black',
 }) => {
-
-  const labelClass = "label-text capitalize " + "text-" + labelColor
+  const labelClass = 'label-text capitalize ' + 'text-' + labelColor;
 
   return (
     <div className="form-control">
@@ -15,13 +14,14 @@ const FormInput = ({
         <span className={labelClass}>{label}</span>
       </label>
       <input
-        type={type}
+        type="date"
         name={name}
         defaultValue={defaultValue}
         className={`input input-bordered ${size}`}
+        min={minDate}
         required
       />
     </div>
   );
 };
-export default FormInput;
+export default DateInput;

@@ -1,6 +1,6 @@
 import { Form } from 'react-router-dom';
 import { BiSolidEdit } from 'react-icons/bi';
-import FormInput from '../FormInput';
+import FormInput from '../FormControls/FormInput';
 
 const ScoreInfo = ({ title, score, board, year }) => {
   const id = `edit-score-${title.toLowerCase()}`;

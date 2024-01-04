@@ -1,17 +1,9 @@
-import { useQueryClient } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-
-import {
-  changeFilter,
-  setCurrentJobs,
-  setJobApplyId,
-} from '../features/jobs/jobsSlice';
-import { fetchJobsQuery } from '../pages/Jobs';
-import { customFetch } from '../utils';
 import { Link } from 'react-router-dom';
+
+import { setJobApply } from '../features/jobs/jobsSlice';
 
 const SingleJob = ({ job, status, role }) => {
   const {
@@ -28,25 +20,7 @@ const SingleJob = ({ job, status, role }) => {
     deadline,
   } = job;
 
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
-
-  async function applyHandler(jobId) {
-    const url = `/student/jobs/${jobId}/apply`;
-    try {
-      await customFetch.patch(url);
-      await queryClient.refetchQueries({ queryKey: ['jobs', 'open'] });
-      const { jobs } = await queryClient.fetchQuery(fetchJobsQuery('applied'));
-      dispatch(setCurrentJobs({ jobs }));
-      dispatch(changeFilter({ newFilter: 'applied' }));
-      toast.success('Applied successfully!');
-    } catch (error) {
-      console.log(error);
-      const errorMessage =
-        error?.response?.data?.message || 'Failed to apply for job!';
-      toast.error(errorMessage);
-    }
-  }
 
   return (
     <div className="card gap-y-2 p-4 shadow-md hover:shadow-xl w-fit max-w-sm border-l-gray-700">
@@ -108,16 +82,18 @@ const SingleJob = ({ job, status, role }) => {
             Shortlisted
           </button>
         ) : (
-          // <button
-          //   className="hover:scale-125 w-fit self-center btn btn-success btn-sm"
-          //   onClick={() => applyHandler(_id)}
-          // >
-          //   Apply
-          // </button>
           <button
             className="hover:scale-125 w-fit self-center btn btn-success btn-sm"
             onClick={() => {
-              dispatch(setJobApplyId({ jobApplyId: _id }));
+              dispatch(
+                setJobApply({
+                  jobApply: {
+                    jobId: _id,
+                    profile,
+                    company: company.name,
+                  },
+                })
+              );
               document.getElementById('jobApplicationModal').showModal();
             }}
           >

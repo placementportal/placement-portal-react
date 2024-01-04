@@ -1,17 +1,38 @@
-import axios from 'axios';
-import { redirect } from 'react-router-dom';
+import { customFetch } from './axiosSetup';
 
-const localAPI = 'http://localhost:5000/api/v1';
-const APIUrl = 'https://placement-portal-xk5c.onrender.com/api/v1';
+import {
+  getStudentJobFilters,
+  getCompanyJobFilters,
+  getCourseOptions,
+  getDepartmentOptions,
+  getBatchOptions,
+} from './prepareOptions';
 
-export const customFetch = axios.create({
-  baseURL: localAPI,
-  withCredentials: true,
-});
+import {
+  fetchJobsQuery,
+  fetchCoursesQuery,
+  fetchDeptQuery,
+  fetchBatchQuery,
+} from './fetchQueries';
 
-customFetch.interceptors.response.use(function (response) {
-  if (response.status === 401 || response.status === 403) {
-    redirect('/');
-  }
-  return response;
-});
+import { formatDate } from './jsUtils';
+
+export {
+  customFetch,
+
+  /* Prepare Options */
+  getStudentJobFilters,
+  getCompanyJobFilters,
+  getCourseOptions,
+  getDepartmentOptions,
+  getBatchOptions,
+
+  /* Fetch Queries */
+  fetchJobsQuery,
+  fetchCoursesQuery,
+  fetchDeptQuery,
+  fetchBatchQuery,
+
+  /* JS utils */
+  formatDate,
+};

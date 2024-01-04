@@ -1,6 +1,14 @@
-export { default as FormInput } from './FormInput';
-export { default as FileInput } from './FileInput';
-export { default as SelectInput } from './SelectInput';
+export { default as Navbar } from './Navbar';
+
+/* FORM INPUTS */
+export { default as FormInput } from './FormControls/FormInput';
+export { default as FileInput } from './FormControls/FileInput';
+export { default as SelectInput } from './FormControls/SelectInput';
+export { default as Textarea } from './FormControls/Textarea';
+export { default as CheckboxInput } from './FormControls/CheckboxInput';
+export { default as MultipleInputs } from './FormControls/MultipleInputs';
+export { default as NumberInput } from './FormControls/NumberInput';
+export { default as DateInput } from './FormControls/DateInput';
 
 /* STUDENT */
 export { default as StudentPersonal } from './Student/StudentPersonal';
@@ -12,3 +20,5 @@ export { default as StudentAward } from './Student/StudentAward';
 
 export { default as JobsContainer } from './JobsContainer';
 export { default as SingleJob } from './SingleJob';
+export { default as JobApplicationForm } from './Student/JobApplicationForm';
+export { default as CreateJobForm } from './CompanyAdmin/CreateJobForm';

@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const jobs = {
   currentFilter: 'open',
   currentJobs: [],
-  jobApplyId: '',
+  jobApply: null,
 };
 
 const jobSlice = createSlice({
@@ -16,16 +16,16 @@ const jobSlice = createSlice({
     setCurrentJobs: (state, action) => {
       state.currentJobs = action.payload.jobs;
     },
-    setJobApplyId: (state, action) => {
-      state.jobApplyId = action.payload.jobApplyId;
+    setJobApply: (state, action) => {
+      state.jobApply = action.payload.jobApply;
     },
-    resetJobApplyId: (state) => {
-      state.jobApplyId = '';
+    resetJobApply: (state) => {
+      state.jobApply = null;
     },
   },
 });
 
-export const { changeFilter, setCurrentJobs, setJobApplyId, resetJobApplyId } =
+export const { changeFilter, setCurrentJobs, setJobApply, resetJobApply } =
   jobSlice.actions;
 
 export default jobSlice.reducer;
