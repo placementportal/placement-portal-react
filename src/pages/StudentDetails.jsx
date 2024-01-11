@@ -1,38 +1,49 @@
+import { redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+import { fetchStudentProfile, customFetch } from '../utils';
+
 import {
+  StudentIntro,
   StudentPersonal,
   StudentEducation,
   StudentExperience,
   StudentPlacement,
   StudentTraining,
-  StudentAward,
 } from '../Components';
 
-import { redirect } from 'react-router-dom';
-import { customFetch } from '../utils';
+export const action = (queryClient, store) => {
+  return async function ({ request }) {
+    const formData = await request.formData();
+    const intent = formData.get('intent');
+
+    /* Handle Job Apply */
+    if (intent === 'updatePersonalDetails') {
+      const url = `/student/personal`;
+      try {
+        await customFetch.post(url, formData);
+        toast.success('Personal Details updated successfully!');
+        return redirect('/student-dashboard/');
+      } catch (error) {
+        console.log(error);
+        const errorMessage =
+          error?.response?.data?.message ||
+          'Failed to update personal details!';
+        toast.error(errorMessage);
+        return error;
+      }
+    }
+  };
+};
 
 export const loader = (queryClient) => {
   return async function () {
     try {
-      const personal = await queryClient.ensureQueryData(personalDetailQuery());
-      const education = await queryClient.ensureQueryData(
-        educationDetailQuery()
+      const { profileDetails } = await queryClient.ensureQueryData(
+        fetchStudentProfile()
       );
-      const experience = await queryClient.ensureQueryData(
-        experienceDetailQuery()
-      );
-      const placement = await queryClient.ensureQueryData(
-        placementDetailQuery()
-      );
-      const training = await queryClient.ensureQueryData(trainingDetailQuery());
-      const award = await queryClient.ensureQueryData(awardDetailQuery());
-
       return {
-        personal,
-        education,
-        experience,
-        placement,
-        training,
-        award,
+        profileDetails,
       };
     } catch (error) {
       console.log(error.response);
@@ -45,74 +56,10 @@ export const loader = (queryClient) => {
 
 const StudentDetails = () => {
   return (
-    <div className="flex flex-wrap justify-center items-center gap-8 px-8 py-4">
+    <div className="p-8 lg:p-12 flex flex-col gap-y-8">
+      <StudentIntro />
       <StudentPersonal />
-      <StudentEducation />
-      <StudentExperience />
-      <StudentPlacement />
-      <StudentTraining />
-      <StudentAward />
     </div>
   );
 };
 export default StudentDetails;
-
-function personalDetailQuery() {
-  return {
-    queryKey: ['personal'],
-    queryFn: async () => {
-      const { data } = await customFetch.get('/student/personal');
-      return data;
-    },
-  };
-}
-
-function educationDetailQuery() {
-  return {
-    queryKey: ['education'],
-    queryFn: async () => {
-      const { data } = await customFetch.get('/student/education');
-      return data;
-    },
-  };
-}
-
-function experienceDetailQuery() {
-  return {
-    queryKey: ['experience'],
-    queryFn: async () => {
-      const { data } = await customFetch.get('/student/experience');
-      return data;
-    },
-  };
-}
-
-function placementDetailQuery() {
-  return {
-    queryKey: ['placement'],
-    queryFn: async () => {
-      const { data } = await customFetch.get('/student/placement');
-      return data;
-    },
-  };
-}
-
-function trainingDetailQuery() {
-  return {
-    queryKey: ['training'],
-    queryFn: async () => {
-      const { data } = await customFetch.get('/student/training');
-      return data;
-    },
-  };
-}
-
-function awardDetailQuery() {
-  return {
-    queryKey: ['award'],
-    queryFn: async () => {
-      const { data } = await customFetch.get('/student/award');
-      return data;
-    },
-  };
-}

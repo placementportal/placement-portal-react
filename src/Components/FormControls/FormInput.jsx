@@ -14,6 +14,7 @@ const FormInput = ({
         <span className={labelClass}>{label}</span>
       </label>
       <input
+        id={name}
         type={type}
         name={name}
         defaultValue={defaultValue}

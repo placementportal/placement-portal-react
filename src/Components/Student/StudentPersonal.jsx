@@ -1,31 +1,83 @@
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, Form } from 'react-router-dom';
+import { SimpleFormInput } from '../';
 
 const StudentPersonal = () => {
-  const { student } = useLoaderData().personal;
-  const { name, email, personal_details } = student;
-  const { fatherName, motherName, contactNumber, address, district, state } =
-    personal_details;
+  const personalDetails = useLoaderData().profileDetails?.personalDetails;
+  let fatherName, motherName, contactNumber, address;
+
+  if (personalDetails) {
+    fatherName = personalDetails.fatherName;
+    motherName = personalDetails.motherName;
+    contactNumber = personalDetails.contactNumber;
+    address = personalDetails.address;
+  }
 
   return (
-    <section id="personal" className="p-8 border shadow">
-      <h3 className="text-center text-2xl font-medium mb-4">Personal Details</h3>
-      <div className='flex flex-col gap-y-4'>
-        <div>
-          <p>Name: {name}</p>
-          <p>Father Name Name: {fatherName}</p>
-          <p>Mother Name: {motherName}</p>
+    <section id="personal">
+      <h3 className="text-2xl font-medium mb-4">Personal Details</h3>
+      <Form method="POST" className="flex flex-col gap-y-4 sm:gap-y-8">
+        <div className="flex flex-col flex-wrap sm:flex-row gap-4 sm:gap-8">
+          <SimpleFormInput
+            name="fatherName"
+            type="text"
+            label="Father's Name"
+            defaultValue={fatherName}
+          />
+          <SimpleFormInput
+            name="motherName"
+            type="text"
+            label="Mother's Name"
+            defaultValue={motherName}
+          />
+          <SimpleFormInput
+            name="locality"
+            type="text"
+            label="Locality"
+            defaultValue={address?.locality}
+          />
+          <SimpleFormInput
+            name="city"
+            type="text"
+            label="City"
+            defaultValue={address?.city}
+          />
+          <SimpleFormInput
+            name="pincode"
+            type="text"
+            label="Pin Code"
+            defaultValue={address?.pincode}
+          />
+          <SimpleFormInput
+            name="district"
+            type="text"
+            label="District"
+            defaultValue={address?.district}
+          />
+          <SimpleFormInput
+            name="state"
+            type="text"
+            label="State"
+            defaultValue={address?.state}
+          />
+          <SimpleFormInput
+            name="contactNumber"
+            type="text"
+            label="Contact Number"
+            defaultValue={contactNumber}
+          />
         </div>
-        <div>
-          <p>Address: {address}</p>
-          <p>District: {district}</p>
-          <p>State: {state}</p>
-        </div>
-        <div>
-          <p>Email: {email}</p>
-          <p>Contact Number: {contactNumber}</p>
-        </div>
-      </div>
+
+        <button
+          type="submit"
+          className="btn btn-success max-w-fit lg:self-end lg:mr-24 text-white btn-sm h-9 px-4"
+          name="intent"
+          value="updatePersonalDetails"
+        >
+          Update
+        </button>
+      </Form>
     </section>
   );
 };
+
 export default StudentPersonal;

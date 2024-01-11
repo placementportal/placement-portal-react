@@ -9,6 +9,7 @@ import {
   CompanyDashboard,
   StudentDetails,
   JobsPage,
+  JobApplications,
 } from './pages/index';
 
 import { store } from './store';
@@ -16,11 +17,13 @@ import { store } from './store';
 import { action as loginAction } from './pages/Login';
 import { action as jobsAction } from './pages/Jobs';
 import { action as companyDBAction } from './pages/CompanyDashboard';
+import { action as studentDetailsAction } from './pages/StudentDetails';
 
 import { loader as loginLoader } from './pages/Login';
 import { loader as companyDBLoader } from './pages/CompanyDashboard';
 import { loader as studentDBloader } from './pages/StudentDetails';
 import { loader as jobsLoader } from './pages/Jobs';
+import { loader as jobsApplicationsLoader } from './pages/JobApplications';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +48,7 @@ const router = createBrowserRouter([
         index: true,
         element: <StudentDetails />,
         loader: studentDBloader(queryClient),
+        action: studentDetailsAction(queryClient, store),
       },
       {
         path: 'jobs',
@@ -68,6 +72,11 @@ const router = createBrowserRouter([
         path: 'jobs',
         element: <JobsPage />,
         loader: jobsLoader(queryClient, store),
+      },
+      {
+        path: 'applications',
+        element: <JobApplications />,
+        loader: jobsApplicationsLoader(queryClient, store),
       },
     ],
   },

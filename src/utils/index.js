@@ -13,6 +13,8 @@ import {
   fetchCoursesQuery,
   fetchDeptQuery,
   fetchBatchQuery,
+  fetchApplicationsQuery,
+  fetchStudentProfile,
 } from './fetchQueries';
 
 import { formatDate } from './jsUtils';
@@ -32,6 +34,8 @@ export {
   fetchCoursesQuery,
   fetchDeptQuery,
   fetchBatchQuery,
+  fetchApplicationsQuery,
+  fetchStudentProfile,
 
   /* JS utils */
   formatDate,

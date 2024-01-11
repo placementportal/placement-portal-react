@@ -5,3 +5,4 @@ export { default as CompanyDashboard } from './CompanyDashboard';
 
 export { default as StudentDetails } from './StudentDetails';
 export { default as JobsPage } from './Jobs';
+export { default as JobApplications } from './JobApplications';
