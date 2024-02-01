@@ -1,9 +1,13 @@
+import { formatDate } from '../../utils';
+
 const DateInput = ({
   label,
   name,
   defaultValue,
   size,
   minDate,
+  maxDate,
+  isRequired = true,
   labelColor = 'black',
 }) => {
   const labelClass = 'label-text capitalize ' + 'text-' + labelColor;
@@ -19,7 +23,8 @@ const DateInput = ({
         defaultValue={defaultValue}
         className={`input input-bordered ${size}`}
         min={minDate}
-        required
+        max={maxDate}
+        required={isRequired}
       />
     </div>
   );

@@ -15,6 +15,11 @@ import {
   fetchBatchQuery,
   fetchApplicationsQuery,
   fetchStudentProfile,
+  fetchStudentPersonal,
+  fetchStudentEducation,
+  fetchStudentExperiences,
+  fetchStudentPlacements,
+  fetchStudentTrainings,
 } from './fetchQueries';
 
 import { formatDate } from './jsUtils';
@@ -36,6 +41,11 @@ export {
   fetchBatchQuery,
   fetchApplicationsQuery,
   fetchStudentProfile,
+  fetchStudentPersonal,
+  fetchStudentEducation,
+  fetchStudentExperiences,
+  fetchStudentPlacements,
+  fetchStudentTrainings,
 
   /* JS utils */
   formatDate,

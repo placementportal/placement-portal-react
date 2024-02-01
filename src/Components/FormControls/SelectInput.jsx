@@ -1,8 +1,8 @@
 const SelectInput = ({ label, name, options, id, changeFn }) => {
   return (
-    <div className="form-control w-full max-w-xs">
+    <div className="form-control max-w-xs">
       <label className="label">
-        <span className="label-text">{label}</span>
+        <span className="label-text capitalize">{label}</span>
       </label>
       <select
         className="select select-bordered"

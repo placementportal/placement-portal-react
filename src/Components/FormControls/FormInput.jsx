@@ -4,6 +4,7 @@ const FormInput = ({
   type,
   defaultValue,
   size,
+  isRequired = true,
   labelColor = 'black',
 }) => {
   const labelClass = 'label-text capitalize ' + 'text-' + labelColor;
@@ -19,7 +20,7 @@ const FormInput = ({
         name={name}
         defaultValue={defaultValue}
         className={`input input-bordered ${size}`}
-        required
+        required={isRequired}
       />
     </div>
   );

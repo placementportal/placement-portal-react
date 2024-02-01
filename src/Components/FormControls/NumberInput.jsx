@@ -4,6 +4,8 @@ const NumberInput = ({
   defaultValue,
   size,
   minValue,
+  maxValue,
+  step,
   labelColor = 'black',
 }) => {
   const labelClass = 'label-text capitalize ' + 'text-' + labelColor;
@@ -19,6 +21,8 @@ const NumberInput = ({
         defaultValue={defaultValue}
         className={`input input-bordered ${size}`}
         min={minValue}
+        max={maxValue}
+        step={step}
         required
       />
     </div>

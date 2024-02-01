@@ -47,7 +47,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <StudentDetails />,
-        loader: studentDBloader(queryClient),
+        loader: studentDBloader(queryClient, store),
         action: studentDetailsAction(queryClient, store),
       },
       {

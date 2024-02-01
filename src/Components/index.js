@@ -10,6 +10,7 @@ export { default as MultipleInputs } from './FormControls/MultipleInputs';
 export { default as NumberInput } from './FormControls/NumberInput';
 export { default as DateInput } from './FormControls/DateInput';
 export { default as SimpleFormInput } from './FormControls/SimpleFormInput';
+export { default as ScoreFieldInput } from './FormControls/ScoreFieldInput';
 
 /* STUDENT */
 export { default as StudentIntro } from './Student/StudentIntro';
@@ -18,6 +19,8 @@ export { default as StudentEducation } from './Student/StudentEducation';
 export { default as StudentExperience } from './Student/StudentExperience';
 export { default as StudentPlacement } from './Student/StudentPlacement';
 export { default as StudentTraining } from './Student/StudentTraining';
+export { default as PastScoreContainer } from './Student/PastScoreContainer';
+export { default as CurrentCourseEducation } from './Student/CurrentCourseEducation';
 
 export { default as JobsContainer } from './JobsContainer';
 export { default as SingleJob } from './SingleJob';

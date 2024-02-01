@@ -32,7 +32,7 @@ export function fetchStudentEducation() {
 
 export function fetchStudentExperiences() {
   return {
-    queryKey: ['experience'],
+    queryKey: ['experiences'],
     queryFn: async () => {
       const { data } = await customFetch.get('/student/experience');
       return data;
@@ -42,7 +42,7 @@ export function fetchStudentExperiences() {
 
 export function fetchStudentPlacements() {
   return {
-    queryKey: ['placement'],
+    queryKey: ['placements'],
     queryFn: async () => {
       const { data } = await customFetch.get('/student/placement');
       return data;
@@ -52,7 +52,7 @@ export function fetchStudentPlacements() {
 
 export function fetchStudentTrainings() {
   return {
-    queryKey: ['training'],
+    queryKey: ['trainings'],
     queryFn: async () => {
       const { data } = await customFetch.get('/student/training');
       return data;
