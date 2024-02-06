@@ -9,6 +9,8 @@ import {
   fetchStudentExperiences,
   fetchStudentPlacements,
   fetchStudentTrainings,
+  fetchStudentSkills,
+  fetchStudentAchievements,
 } from '../utils';
 
 import {
@@ -18,6 +20,8 @@ import {
   setExperiences,
   setPlacements,
   setTrainings,
+  setSkills,
+  setAchievements,
 } from '../features/studentProfile/studentProfileSlice';
 
 import {
@@ -27,6 +31,8 @@ import {
   StudentExperience,
   StudentPlacement,
   StudentTraining,
+  SkillsTab,
+  AchievementsTab,
 } from '../Components';
 
 export const action = (queryClient, store) => {
@@ -257,6 +263,92 @@ export const action = (queryClient, store) => {
         return error;
       }
     }
+
+    /* CREATE SKILL */
+    if (intent === 'createSkill') {
+      const url = `/student/skills`;
+      try {
+        await customFetch.post(url, formData);
+        queryClient.removeQueries({ queryKey: ['skills'] });
+        const { skills } = await queryClient.fetchQuery(fetchStudentSkills());
+        store.dispatch(setSkills({ skills }));
+        document.getElementById('skillModal').close();
+        toast.success('Skill created successfully!');
+        return redirect('/student-dashboard/');
+      } catch (error) {
+        console.log(error);
+        const errorMessage =
+          error?.response?.data?.message || 'Failed to create skill!';
+        document.getElementById('skillFormError').innerText = errorMessage;
+        return error;
+      }
+    }
+
+    /* UPDATE SKILL */
+    if (intent === 'updateSkill') {
+      const url = `/student/skills`;
+      try {
+        await customFetch.patch(url, formData);
+        queryClient.removeQueries({ queryKey: ['skills'] });
+        const { skills } = await queryClient.fetchQuery(fetchStudentSkills());
+        store.dispatch(setSkills({ skills }));
+        document.getElementById('skillModal').close();
+        toast.success('Skill updated successfully!');
+        return redirect('/student-dashboard/');
+      } catch (error) {
+        console.log(error);
+        const errorMessage =
+          error?.response?.data?.message || 'Failed to update skill!';
+        document.getElementById('skillFormError').innerText = errorMessage;
+        return error;
+      }
+    }
+
+    /* CREATE ACHIEVEMENT */
+    if (intent === 'createAchievement') {
+      const url = `/student/achievements`;
+      try {
+        await customFetch.post(url, formData);
+        queryClient.removeQueries({ queryKey: ['achievements'] });
+        const { achievements } = await queryClient.fetchQuery(
+          fetchStudentAchievements()
+        );
+        store.dispatch(setAchievements({ achievements }));
+        document.getElementById('achievementModal').close();
+        toast.success('Achievement created successfully!');
+        return redirect('/student-dashboard/');
+      } catch (error) {
+        console.log(error);
+        const errorMessage =
+          error?.response?.data?.message || 'Failed to create achievement!';
+        document.getElementById('achievementFormError').innerText =
+          errorMessage;
+        return error;
+      }
+    }
+
+    /* UPDATE ACHIEVEMENT */
+    if (intent === 'updateAchievement') {
+      const url = `/student/achievements`;
+      try {
+        await customFetch.patch(url, formData);
+        queryClient.removeQueries({ queryKey: ['achievements'] });
+        const { achievements } = await queryClient.fetchQuery(
+          fetchStudentAchievements()
+        );
+        store.dispatch(setAchievements({ achievements }));
+        document.getElementById('achievementModal').close();
+        toast.success('Achievement updated successfully!');
+        return redirect('/student-dashboard/');
+      } catch (error) {
+        console.log(error);
+        const errorMessage =
+          error?.response?.data?.message || 'Failed to update achievement!';
+        document.getElementById('achievementFormError').innerText =
+          errorMessage;
+        return error;
+      }
+    }
   };
 };
 
@@ -283,6 +375,30 @@ const StudentDetails = () => {
   return (
     <div className="p-8 lg:p-12 flex flex-col gap-y-8">
       <StudentIntro />
+
+      <hr />
+
+      <div role="tablist" className="tabs tabs-lifted">
+        <StudentPersonal />
+        <StudentEducation />
+      </div>
+
+      <hr />
+
+      <div role="tablist" className="tabs tabs-lifted">
+        <StudentPlacement />
+        <StudentExperience />
+        <StudentTraining />
+      </div>
+
+      <hr />
+
+      <div role="tablist" className="tabs tabs-lifted">
+        <SkillsTab />
+        <AchievementsTab />
+      </div>
+
+      {/* <StudentIntro />
       <hr />
       <StudentPersonal />
       <hr />
@@ -293,6 +409,8 @@ const StudentDetails = () => {
       <StudentExperience />
       <hr />
       <StudentTraining />
+      <hr />
+      <SkillAndAchievements /> */}
     </div>
   );
 };

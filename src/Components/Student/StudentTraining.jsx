@@ -17,36 +17,45 @@ const StudentTraining = () => {
   const [modalData, setModalData] = useState({ action: 'create' });
 
   return (
-    <section id="training">
-      <TrainingModal modalData={modalData} />
-      <div className="flex justify-between items-center">
-        <h3 className="text-2xl font-medium mb-4">Trainings</h3>
-        <button
-          className="flex items-center gap-x-2"
-          onClick={() => {
-            setModalData({ action: 'create' });
-            document.getElementById('trainingFormError').innerText = '';
-            document.getElementById('trainingModal').showModal();
-          }}
-        >
-          <FaPlusSquare />
-          New
-        </button>
+    <>
+      <input
+        type="radio"
+        name="details2"
+        role="tab"
+        className="tab capitalize sm:text-lg text-blue-500"
+        aria-label="training"
+      />
+      <div role="tabpanel" className="mt-4 tab-content">
+        <TrainingModal modalData={modalData} />
+        <div className="flex justify-between">
+          <h3 className="text-2xl font-medium">Trainings</h3>
+          <button
+            className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
+            onClick={() => {
+              setModalData({ action: 'create' });
+              document.getElementById('trainingFormError').innerText = '';
+              document.getElementById('trainingModal').showModal();
+            }}
+          >
+            <FaPlusSquare />
+            New
+          </button>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
+          {trainings?.length ? (
+            trainings.map((training) => (
+              <TrainingContainer
+                key={training._id}
+                training={training}
+                setModalData={setModalData}
+              />
+            ))
+          ) : (
+            <p>No trainings found!</p>
+          )}
+        </div>
       </div>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
-        {trainings.length ? (
-          trainings.map((training) => (
-            <TrainingContainer
-              key={training._id}
-              training={training}
-              setModalData={setModalData}
-            />
-          ))
-        ) : (
-          <p>No trainings found!</p>
-        )}
-      </div>
-    </section>
+    </>
   );
 };
 
@@ -208,9 +217,7 @@ async function handleDeleteTraining({ queryClient, dispatch, id }) {
   try {
     await customFetch.delete(`/student/training/${id}`);
     queryClient.removeQueries({ queryKey: ['trainings'] });
-    const { trainings } = await queryClient.fetchQuery(
-      fetchStudentTrainings()
-    );
+    const { trainings } = await queryClient.fetchQuery(fetchStudentTrainings());
     dispatch(setTrainings({ trainings }));
     toast.success('Training deleted successfully!');
     return redirect('/student-dashboard/');

@@ -15,35 +15,45 @@ const StudentPlacement = () => {
   );
   const [modalData, setModalData] = useState({ action: 'create' });
   return (
-    <section id="placement">
-      <PlacementModal modalData={modalData} />
-      <div className="flex justify-between items-center">
-        <h3 className="text-2xl font-medium mb-4">Placements</h3>
-        <button
-          className="flex items-center gap-x-2"
-          onClick={() => {
-            setModalData({ action: 'create' });
-            document.getElementById('placementModal').showModal();
-          }}
-        >
-          <FaPlusSquare />
-          New
-        </button>
+    <>
+      <input
+        type="radio"
+        name="details2"
+        role="tab"
+        className="tab capitalize sm:text-lg text-blue-500"
+        aria-label="placements"
+        defaultChecked={true}
+      />
+      <div role="tabpanel" className="mt-4 tab-content">
+        <PlacementModal modalData={modalData} />
+        <div className="flex justify-between">
+          <h3 className="text-2xl font-medium">Placements</h3>
+          <button
+            className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
+            onClick={() => {
+              setModalData({ action: 'create' });
+              document.getElementById('placementModal').showModal();
+            }}
+          >
+            <FaPlusSquare />
+            New
+          </button>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
+          {placements?.length ? (
+            placements.map((placement) => (
+              <PlacementContainer
+                key={placement._id}
+                placement={placement}
+                setModalData={setModalData}
+              />
+            ))
+          ) : (
+            <p>No placements found!</p>
+          )}
+        </div>
       </div>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
-        {placements.length ? (
-          placements.map((placement) => (
-            <PlacementContainer
-              key={placement._id}
-              placement={placement}
-              setModalData={setModalData}
-            />
-          ))
-        ) : (
-          <p>No placements found!</p>
-        )}
-      </div>
-    </section>
+    </>
   );
 };
 

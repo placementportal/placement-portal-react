@@ -30,76 +30,87 @@ const StudentEducation = () => {
     newOptions.push(getPastScoreOption('graduation', setModalData));
 
   return (
-    <section id="education">
-      <PastScoreModal modalData={modalData} />
-
-      <div className="flex flex-wrap justify-between">
-        <h3 className="text-2xl font-medium mb-4">Education Details</h3>
-        {newOptions.length ? (
-          <div className="dropdown">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-sm bg-green-300 hover:bg-green-500 "
-            >
-              Add New
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] w-fit menu p-2 shadow bg-base-100 rounded-box"
-            >
-              {newOptions}
-            </ul>
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
-
-      <CurrentCourseEducation
-        courseLevel={courseLevel}
-        semestersCount={semestersCount}
-        isLateralEntry={isLateralEntry}
-        data={
-          courseLevel === 'graduation'
-            ? graduation?.scores
-            : postGraduation?.scores
-        }
+    <>
+      <input
+        type="radio"
+        name="details"
+        role="tab"
+        className="tab capitalize sm:text-lg text-blue-500"
+        aria-label="education"
+        defaultChecked={false}
       />
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
-        {courseLevel === 'postGraduation' && graduation && (
-          <PastScoreContainer
-            label="graduation"
-            data={graduation}
-            setModalData={setModalData}
-          />
-        )}
 
-        {diploma && (
-          <PastScoreContainer
-            label="diploma"
-            data={diploma}
-            setModalData={setModalData}
-          />
-        )}
+      <div role="tabpanel" className="mt-4 tab-content">
+        <PastScoreModal modalData={modalData} />
 
-        {intermediate && (
-          <PastScoreContainer
-            label="intermediate"
-            data={intermediate}
-            setModalData={setModalData}
-          />
-        )}
+        <div className="flex flex-wrap justify-between">
+          <h3 className="text-2xl font-medium mb-4">Education Details</h3>
+          {newOptions.length ? (
+            <div className="dropdown">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-sm bg-green-300 hover:bg-green-500 "
+              >
+                Add New
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content z-[1] w-fit menu p-2 shadow bg-base-100 rounded-box"
+              >
+                {newOptions}
+              </ul>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
 
-        {highschool && (
-          <PastScoreContainer
-            label="highschool"
-            data={highschool}
-            setModalData={setModalData}
-          />
-        )}
+        <CurrentCourseEducation
+          courseLevel={courseLevel}
+          semestersCount={semestersCount}
+          isLateralEntry={isLateralEntry}
+          data={
+            courseLevel === 'graduation'
+              ? graduation?.scores
+              : postGraduation?.scores
+          }
+        />
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
+          {courseLevel === 'postGraduation' && graduation && (
+            <PastScoreContainer
+              label="graduation"
+              data={graduation}
+              setModalData={setModalData}
+            />
+          )}
+
+          {diploma && (
+            <PastScoreContainer
+              label="diploma"
+              data={diploma}
+              setModalData={setModalData}
+            />
+          )}
+
+          {intermediate && (
+            <PastScoreContainer
+              label="intermediate"
+              data={intermediate}
+              setModalData={setModalData}
+            />
+          )}
+
+          {highschool && (
+            <PastScoreContainer
+              label="highschool"
+              data={highschool}
+              setModalData={setModalData}
+            />
+          )}
+        </div>
       </div>
-    </section>
+    </>
   );
 };
 

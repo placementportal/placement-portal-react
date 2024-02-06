@@ -1,11 +1,10 @@
 import axios from 'axios';
 import { redirect } from 'react-router-dom';
 
-const localAPI = 'http://localhost:5000/api/v1';
-const APIUrl = 'https://placement-portal-xk5c.onrender.com/api/v1';
+const APIUrl = import.meta.env.VITE_API_URL;
 
 export const customFetch = axios.create({
-  baseURL: localAPI,
+  baseURL: APIUrl,
   withCredentials: true,
 });
 

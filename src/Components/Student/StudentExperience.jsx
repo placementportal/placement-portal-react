@@ -16,36 +16,45 @@ const StudentExperience = () => {
 
   const [modalData, setModalData] = useState({ action: 'create' });
   return (
-    <section id="experience">
-      <ExperienceModal modalData={modalData} />
-      <div className="flex justify-between items-center">
-        <h3 className="text-2xl font-medium mb-4">Experience</h3>
-        <button
-          className="flex items-center gap-x-2"
-          onClick={() => {
-            setModalData({ action: 'create' });
-            document.getElementById('experienceFormError').innerText = '';
-            document.getElementById('experienceModal').showModal();
-          }}
-        >
-          <FaPlusSquare />
-          New
-        </button>
+    <>
+      <input
+        type="radio"
+        name="details2"
+        role="tab"
+        className="tab capitalize sm:text-lg text-blue-500"
+        aria-label="experience"
+      />
+      <div role="tabpanel" className="mt-4 tab-content">
+        <ExperienceModal modalData={modalData} />
+        <div className="flex justify-between">
+          <h3 className="text-2xl font-medium">Experience</h3>
+          <button
+            className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
+            onClick={() => {
+              setModalData({ action: 'create' });
+              document.getElementById('experienceFormError').innerText = '';
+              document.getElementById('experienceModal').showModal();
+            }}
+          >
+            <FaPlusSquare />
+            New
+          </button>
+        </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
+          {experiences?.length ? (
+            experiences.map((experience) => (
+              <ExperienceContainer
+                key={experience._id}
+                experience={experience}
+                setModalData={setModalData}
+              />
+            ))
+          ) : (
+            <p>No experiences found!</p>
+          )}
+        </div>
       </div>
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
-        {experiences?.length ? (
-          experiences.map((experience) => (
-            <ExperienceContainer
-              key={experience._id}
-              experience={experience}
-              setModalData={setModalData}
-            />
-          ))
-        ) : (
-          <p>No experiences found!</p>
-        )}
-      </div>
-    </section>
+    </>
   );
 };
 

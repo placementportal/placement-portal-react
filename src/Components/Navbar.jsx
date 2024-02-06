@@ -5,6 +5,7 @@ import { FaPowerOff } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
 import { logoutUser } from '../features/user/userSlice';
+import { resetStudentProfile } from '../features/studentProfile/studentProfileSlice';
 import { customFetch } from '../utils/axiosSetup';
 
 import { CreateJobForm } from './';
@@ -22,6 +23,7 @@ const Navbar = ({ options }) => {
       await customFetch.get('/auth/logout');
       toast.error('Logged out successfully!');
       dispatch(logoutUser());
+      dispatch(resetStudentProfile());
       queryClient.clear();
       navigate('/');
     } catch (error) {

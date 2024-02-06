@@ -19,6 +19,8 @@ export { default as StudentEducation } from './Student/StudentEducation';
 export { default as StudentExperience } from './Student/StudentExperience';
 export { default as StudentPlacement } from './Student/StudentPlacement';
 export { default as StudentTraining } from './Student/StudentTraining';
+export { default as SkillsTab } from './Student/SkillsTab';
+export { default as AchievementsTab } from './Student/AchievementsTab';
 export { default as PastScoreContainer } from './Student/PastScoreContainer';
 export { default as CurrentCourseEducation } from './Student/CurrentCourseEducation';
 

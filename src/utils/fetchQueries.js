@@ -60,6 +60,26 @@ export function fetchStudentTrainings() {
   };
 }
 
+export function fetchStudentSkills() {
+  return {
+    queryKey: ['skills'],
+    queryFn: async () => {
+      const { data } = await customFetch.get('/student/skills');
+      return data;
+    },
+  };
+}
+
+export function fetchStudentAchievements() {
+  return {
+    queryKey: ['achievements'],
+    queryFn: async () => {
+      const { data } = await customFetch.get('/student/achievements');
+      return data;
+    },
+  };
+}
+
 export function fetchApplicationsQuery() {
   const url = `/company/applications`;
 

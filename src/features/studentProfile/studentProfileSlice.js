@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const studentProfile = {
-};
+const studentProfile = {};
 
 const jobSlice = createSlice({
   name: 'studentProfile',
@@ -9,8 +8,7 @@ const jobSlice = createSlice({
   reducers: {
     initialProfileSetup: (state, action) => {
       for (let key in action.payload) {
-        if (!state[key])
-          state[key] = action.payload[key];
+        if (!state[key]) state[key] = action.payload[key];
       }
     },
     setPersonalDetails: (state, action) => {
@@ -28,6 +26,18 @@ const jobSlice = createSlice({
     setTrainings: (state, action) => {
       state.trainings = action.payload.trainings;
     },
+    setSkills: (state, action) => {
+      state.skills = action.payload.skills;
+    },
+    setAchievements: (state, action) => {
+      state.achievements = action.payload.achievements;
+    },
+
+    resetStudentProfile: (state) => {
+      for (let key in state) {
+        delete state[key];
+      }
+    },
   },
 });
 
@@ -38,6 +48,9 @@ export const {
   setPlacements,
   setTrainings,
   setExperiences,
+  setSkills,
+  setAchievements,
+  resetStudentProfile,
 } = jobSlice.actions;
 
 export default jobSlice.reducer;
