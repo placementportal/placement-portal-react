@@ -1,5 +1,3 @@
-import { formatDate } from '../../utils';
-
 const DateInput = ({
   label,
   name,

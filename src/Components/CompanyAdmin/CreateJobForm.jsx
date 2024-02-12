@@ -1,7 +1,6 @@
 import { Form } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 
 import {
   FormInput,
@@ -15,25 +14,52 @@ import {
 
 import {
   getCourseOptions,
-  fetchDeptQuery,
-  fetchBatchQuery,
   getDepartmentOptions,
   getBatchOptions,
-  formatDate
+  formatDate,
 } from '../../utils';
 
-import {
-  setDepartments,
-  setBatches,
-} from '../../features/courseInfo/courseInfoSlice';
-
 const CreateJobForm = () => {
-  const queryClient = useQueryClient();
-  const dispatch = useDispatch();
+  const courseOptions = useSelector((state) => state.courseOptions);
 
-  const courses = useSelector((state) => state.courseInfoState);
-  const [deptOptions, setDeptOptions] = useState([]);
-  const [batchOptions, setBatchOptions] = useState([]);
+  const jobData = useSelector((state) => state.jobCreateFormState);
+  const receivingCourseId = jobData?.receivingCourse?.id;
+
+  const defaultDeptOptions = receivingCourseId
+    ? getDepartmentOptions(courseOptions[receivingCourseId]?.departments)
+    : [];
+
+  const defaultBatchOptions = receivingCourseId
+    ? getBatchOptions(courseOptions[receivingCourseId]?.batches)
+    : [];
+
+  const [deptOptions, setDeptOptions] = useState(defaultDeptOptions);
+  const [batchOptions, setBatchOptions] = useState(defaultBatchOptions);
+
+  const [skillFields, setSkillFields] = useState(['']);
+  const [defaultDeadline, setDefaultDeadline] = useState();
+
+  useEffect(() => {
+    setDeptOptions(defaultDeptOptions);
+    setBatchOptions(defaultBatchOptions);
+  }, [receivingCourseId]);
+
+  useEffect(() => {
+    if (jobData?.keySkills) {
+      setSkillFields(jobData.keySkills);
+    }
+  }, [jobData.keySkills]);
+
+  useEffect(() => {
+    if (jobData?.deadline) {
+      setDefaultDeadline(formatDate(new Date(jobData.deadline)));
+    } else {
+      const todayDate = new Date();
+      const laterDate = new Date();
+      laterDate.setMonth(todayDate.getMonth() + 1);
+      setDefaultDeadline(formatDate(laterDate));
+    }
+  }, [jobData?.deadline]);
 
   async function handleCourseChange() {
     const courseId = document.getElementById('createJobCourse').value;
@@ -42,60 +68,68 @@ const CreateJobForm = () => {
       setDeptOptions([]);
       setBatchOptions([]);
     } else {
-      const { departments } = await queryClient.ensureQueryData(
-        fetchDeptQuery(courseId)
+      const deptOptions = getDepartmentOptions(
+        courseOptions[courseId].departments
       );
-      const { batches } = await queryClient.ensureQueryData(
-        fetchBatchQuery(courseId)
-      );
-      dispatch(setDepartments({ courseId, departments }));
-      setDeptOptions(getDepartmentOptions(departments));
-      dispatch(setBatches({ courseId, batches }));
-      setBatchOptions(getBatchOptions(batches));
+      setDeptOptions(deptOptions);
+      const batchOptions = getBatchOptions(courseOptions[courseId].batches);
+      setBatchOptions(batchOptions);
     }
   }
-
-  const todayDate = new Date();
-  const laterDate = new Date();
-  laterDate.setMonth(todayDate.getMonth() + 1);
 
   return (
     <dialog id="createJobModal" className="modal">
       <div className="modal-box pb-0">
-        <h3 className="font-bold text-lg underline">Create Job</h3>
+        <h3 className="font-bold text-lg underline capitalize">
+          {jobData.action} Job
+        </h3>
         <Form
           method="POST"
-          encType="multipart/form-data"
           className="mt-2 flex flex-col gap-4"
-          name="createJobForm"
+          name={`${jobData.action}JobForm`}
         >
-          <FormInput label="Profile" name="profile" type="text" />
+          <input type="text" name="jobId" defaultValue={jobData?._id} hidden />
+
+          <FormInput
+            label="Profile"
+            name="profile"
+            type="text"
+            defaultValue={jobData?.profile}
+          />
+
           <Textarea
             label="Description"
             name="description"
             placeholder="Mention Job Qualifications and Responsibilities"
+            defaultValue={jobData?.description || ''}
           />
 
           <SelectInput
             label="Select Course"
-            options={getCourseOptions(courses)}
+            options={getCourseOptions(courseOptions)}
             id="createJobCourse"
             changeFn={handleCourseChange}
             name="receivingCourse"
+            defaultValue={jobData?.receivingCourse?.id || -1}
           />
 
           <CheckboxInput
             label="Select Deparments"
             options={deptOptions}
             name="receivingDepartments"
-            emptyMsg="No departments"
+            defaultValues={jobData?.receivingDepartments?.map(
+              (item) => item.id
+            )}
+            emptyMsg="Select a course!"
           />
 
-          <CheckboxInput
-            label="Select Batches"
+          <SelectInput
+            label="Select Batch"
             options={batchOptions}
-            name="receivingBatches"
-            emptyMsg="No batches"
+            id="createJobBatch"
+            name="receivingBatch"
+            emptyMessage="No batches found for this course!"
+            defaultValue={jobData?.receivingBatch?.id}
           />
 
           <FormInput
@@ -103,6 +137,7 @@ const CreateJobForm = () => {
             name="location"
             type="text"
             size="w-fit"
+            defaultValue={jobData?.location}
           />
 
           <NumberInput
@@ -110,6 +145,7 @@ const CreateJobForm = () => {
             name="jobPackage"
             minValue={1}
             size="w-fit"
+            defaultValue={jobData?.jobPackage}
           />
 
           <NumberInput
@@ -117,25 +153,34 @@ const CreateJobForm = () => {
             name="openingsCount"
             minValue={1}
             size="w-fit"
+            defaultValue={jobData?.openingsCount}
           />
 
-          <MultipleInputs label="Key Skills" name="keySkills" type="text" />
+          <MultipleInputs
+            label="Key Skills"
+            name="keySkills"
+            type="text"
+            defaultValue={skillFields}
+            manageFields={setSkillFields}
+          />
 
           <DateInput
             label="Deadline"
             name="deadline"
-            minDate={formatDate(todayDate)}
-            defaultValue={formatDate(laterDate)}
+            minDate={formatDate(new Date())}
+            defaultValue={defaultDeadline}
             size="w-fit"
           />
 
+          <div id="jobCreateFormError" className="text-red-500"></div>
+
           <button
             type="submit"
-            className="btn btn-success self-center btn-sm h-9 px-4"
+            className="btn btn-success self-center capitalize text-white btn-sm h-9 px-4"
             name="intent"
-            value="createJob"
+            value={`${jobData.action}Job`}
           >
-            Create
+            {jobData?.action}
           </button>
         </Form>
         <div className="modal-action">

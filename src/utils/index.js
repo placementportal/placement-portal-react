@@ -22,6 +22,7 @@ import {
   fetchStudentTrainings,
   fetchStudentSkills,
   fetchStudentAchievements,
+  fetchCourseOptions,
 } from './fetchQueries';
 
 import { formatDate } from './jsUtils';
@@ -50,6 +51,7 @@ export {
   fetchStudentTrainings,
   fetchStudentSkills,
   fetchStudentAchievements,
+  fetchCourseOptions,
 
   /* JS utils */
   formatDate,

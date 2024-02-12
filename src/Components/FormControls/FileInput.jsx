@@ -1,4 +1,4 @@
-const FileInput = ({ name, label, accept }) => {
+const FileInput = ({ name, label, accept, isRequired = false }) => {
   return (
     <div className="form-control">
       <label htmlFor={name} className="label">
@@ -9,6 +9,7 @@ const FileInput = ({ name, label, accept }) => {
         name={name}
         className="file-input file-input-bordered file-input-sm w-full max-w-xs"
         accept={accept}
+        required={isRequired}
       />
     </div>
   );

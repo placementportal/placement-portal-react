@@ -24,6 +24,9 @@ export { default as AchievementsTab } from './Student/AchievementsTab';
 export { default as PastScoreContainer } from './Student/PastScoreContainer';
 export { default as CurrentCourseEducation } from './Student/CurrentCourseEducation';
 
+/* Modals */
+export { default as PlacementModal } from './Student/PlacementModal';
+
 export { default as JobsContainer } from './JobsContainer';
 export { default as SingleJob } from './SingleJob';
 export { default as JobApplicationForm } from './Student/JobApplicationForm';

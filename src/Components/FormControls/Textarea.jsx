@@ -1,4 +1,10 @@
-const Textarea = ({ label, name, placeholder, labelColor = 'black' }) => {
+const Textarea = ({
+  label,
+  name,
+  placeholder,
+  defaultValue,
+  labelColor = 'black',
+}) => {
   const labelClass = 'label-text capitalize ' + 'text-' + labelColor;
   return (
     <div className="form-control">
@@ -9,6 +15,7 @@ const Textarea = ({ label, name, placeholder, labelColor = 'black' }) => {
         className="textarea textarea-lg textarea-bordered p-2"
         placeholder={placeholder}
         name={name}
+        defaultValue={defaultValue}
       ></textarea>
     </div>
   );

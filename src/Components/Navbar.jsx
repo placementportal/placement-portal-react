@@ -8,7 +8,7 @@ import { logoutUser } from '../features/user/userSlice';
 import { resetStudentProfile } from '../features/studentProfile/studentProfileSlice';
 import { customFetch } from '../utils/axiosSetup';
 
-import { CreateJobForm } from './';
+import { resetJobModalData } from '../features/jobCreateForm/jobCreateSlice';
 
 const Navbar = ({ options }) => {
   const navigate = useNavigate();
@@ -80,9 +80,11 @@ const Navbar = ({ options }) => {
         {userRole === 'company_admin' && (
           <button
             className="btn btn-sm btn-primary"
-            onClick={() =>
-              document.getElementById('createJobModal').showModal()
-            }
+            onClick={() => {
+              dispatch(resetJobModalData());
+              document.getElementById('jobCreateFormError').innerText = '';
+              document.getElementById('createJobModal').showModal();
+            }}
           >
             Create Job
           </button>
@@ -91,7 +93,6 @@ const Navbar = ({ options }) => {
           <FaPowerOff />
         </button>
       </div>
-      {userRole === 'company_admin' && <CreateJobForm />}
     </div>
   );
 };

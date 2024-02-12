@@ -3,31 +3,42 @@ import { Outlet, redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { options } from '../Components/CompanyAdmin/NavOptions';
-import { fetchCoursesQuery, customFetch, fetchJobsQuery } from '../utils';
-import { setCourses } from '../features/courseInfo/courseInfoSlice';
+import { fetchCourseOptions, customFetch, fetchJobsQuery } from '../utils';
+import { setCourseOptions } from '../features/courseOptions/courseOptions';
 import { setCurrentJobs } from '../features/jobs/jobsSlice';
+import { CreateJobForm } from '../Components';
+import { resetJobModalData } from '../features/jobCreateForm/jobCreateSlice';
 
 export const action = (queryClient, store) => {
   return async function ({ request }) {
     const formData = await request.formData();
-    const data = Object.fromEntries(formData);
-
-    /* Transforming Into Array */
-    const receivingDepartments = formData.getAll('receivingDepartments');
-    const receivingBatches = formData.getAll('receivingBatches');
-    const keySkills = formData.getAll('keySkills');
-
-    data.receivingBatches = receivingBatches;
-    data.receivingDepartments = receivingDepartments;
-    data.keySkills = keySkills;
-
     const intent = formData.get('intent');
 
-    /* Handle Job Creation */
-    if (intent === 'createJob') {
-      const url = `/company/jobs`;
+    /* Handle Job Creation & Updation */
+    if (intent === 'createJob' || intent === 'updateJob') {
+      /* Transforming Into Array */
+      const receivingDepartments = formData.getAll('receivingDepartments');
+      const keySkills = formData.getAll('keySkills');
+
+      const data = Object.fromEntries(formData);
+      data.receivingDepartments = receivingDepartments;
+      data.keySkills = keySkills;
+
+      let url = `/company/jobs`;
+      const action = intent === 'createJob' ? 'create' : 'update';
+
+      if (intent === 'updateJob') {
+        const jobId = data['jobId'];
+        url += `/${jobId}`;
+      }
+
       try {
-        await customFetch.post(url, data);
+        if (intent === 'createJob') {
+          await customFetch.post(url, data);
+        } else {
+          await customFetch.patch(url, data);
+        }
+
         await queryClient.refetchQueries({ queryKey: ['jobs', 'open'] });
         const { jobs } = await queryClient.fetchQuery(
           fetchJobsQuery({ role: 'company_admin', status: 'open' })
@@ -35,20 +46,16 @@ export const action = (queryClient, store) => {
         store.dispatch(setCurrentJobs({ jobs }));
 
         /* RESET FORM */
-        document.forms.createJobForm.reset();
-        const skillsContainer = document.getElementById('skillsContainer');
-        while (skillsContainer.children.length > 1) {
-          skillsContainer.removeChild(skillsContainer.children[1])
-        }
-
+        document.forms[`${action}JobForm`].reset();
+        store.dispatch(resetJobModalData());
         document.getElementById('createJobModal').close();
-        toast.success('Created successfully!');
+        toast.success(`Job ${action + 'd'} successfully!`);
         return redirect('/company-dashboard/jobs');
       } catch (error) {
         console.log(error);
         const errorMessage =
-          error?.response?.data?.message || 'Failed to create job!';
-        toast.error(errorMessage);
+          error?.response?.data?.message || `Failed to ${action} job!`;
+        document.getElementById('jobCreateFormError').innerText = errorMessage;
         return error;
       }
     }
@@ -58,10 +65,10 @@ export const action = (queryClient, store) => {
 export const loader = (queryClient, store) => {
   return async function () {
     try {
-      const { courses } = await queryClient.ensureQueryData(
-        fetchCoursesQuery()
+      const { options } = await queryClient.ensureQueryData(
+        fetchCourseOptions()
       );
-      store.dispatch(setCourses({ courses }));
+      store.dispatch(setCourseOptions({ options }));
       return true;
     } catch (error) {
       const errorMessage =
@@ -77,6 +84,7 @@ const CompanyDashboard = () => {
   return (
     <>
       <Navbar options={options} />
+      <CreateJobForm />
       <Outlet />
     </>
   );

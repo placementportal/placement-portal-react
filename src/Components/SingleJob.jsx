@@ -1,9 +1,13 @@
 import { useDispatch } from 'react-redux';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { setJobApply } from '../features/jobs/jobsSlice';
+import { setCurrentJobs, setJobApply } from '../features/jobs/jobsSlice';
+import { setJobModalData } from '../features/jobCreateForm/jobCreateSlice';
+import { useQueryClient } from '@tanstack/react-query';
+import { customFetch, fetchJobsQuery } from '../utils';
 
 const SingleJob = ({ job, status, role }) => {
   const {
@@ -11,7 +15,7 @@ const SingleJob = ({ job, status, role }) => {
     profile,
     description,
     openingsCount,
-    applicantsCount,
+    applicationsCount,
     location,
     company,
     jobPackage,
@@ -21,31 +25,45 @@ const SingleJob = ({ job, status, role }) => {
   } = job;
 
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   return (
-    <div className="card gap-y-2 p-4 shadow-md hover:shadow-xl w-fit max-w-sm border-l-gray-700">
-      {role == 'company_admin' && (
+    <div className="card gap-y-2 border-t border-b-slate-200 p-4 shadow-md hover:shadow-xl w-sm border-l-gray-700">
+      {role == 'company_admin' && applicationsCount === 0 && (
         <div className="flex items-center gap-4 justify-end">
-          <button className="">
+          <button
+            onClick={() => {
+              dispatch(setJobModalData({ ...job }));
+              document.getElementById('createJobModal').showModal();
+            }}
+          >
             <FaEdit />
           </button>
-          <button>
+          <button
+            onClick={() => handleDeleteJob({ queryClient, dispatch, id: _id })}
+          >
             <MdDelete />
           </button>
         </div>
       )}
-      <h3 className="font-semibold tracking-wide text-2xl">{profile}</h3>
-      <div className="flex justify-between">
+      <h3 className="font-semibold tracking-wide whitespace-nowrap overflow-hidden text-ellipsis text-2xl">
+        {profile}
+      </h3>
+      <div className="flex justify-between gap-x-4">
         <a
-          className="font-bold tracking-wider"
+          className="font-bold tracking-wider link max-w-[50%] whitespace-nowrap overflow-hidden text-ellipsis"
           href={company.website}
           target="_blank"
         >
           {company.name}
         </a>
-        <p>{postedBy.name}</p>
+        <p className="whitespace-nowrap overflow-hidden text-ellipsis">
+          {postedBy.name}
+        </p>
       </div>
-      <p className="font-light">{description}</p>
+      <p className="font-light overflow-hidden line-clamp-[7] sm:line-clamp-[8] text-ellipsis">
+        {description}
+      </p>
       <p>Location: {location}</p>
       <p>Package: {jobPackage} LPA</p>
       <div className="flex flex-wrap gap-4">
@@ -59,7 +77,7 @@ const SingleJob = ({ job, status, role }) => {
         ))}
       </div>
       <p>Openings: {openingsCount}</p>
-      <p>Applicants: {applicantsCount}</p>
+      <p>Applications Count: {applicationsCount}</p>
       <p>Deadline: {new Date(deadline).toLocaleDateString()}</p>
       <Link className="btn btn-md btn-link w-fit self-center hover:scale-125">
         View Details
@@ -83,7 +101,7 @@ const SingleJob = ({ job, status, role }) => {
           </button>
         ) : (
           <button
-            className="hover:scale-125 w-fit self-center btn btn-success btn-sm"
+            className="hover:scale-125 w-fit self-center text-white btn btn-success btn-sm"
             onClick={() => {
               dispatch(
                 setJobApply({
@@ -103,4 +121,24 @@ const SingleJob = ({ job, status, role }) => {
     </div>
   );
 };
+
+async function handleDeleteJob({ queryClient, dispatch, id }) {
+  try {
+    await customFetch.delete(`/company/jobs/${id}`);
+    queryClient.removeQueries({ queryKey: ['jobs', 'open'] });
+    const { jobs } = await queryClient.fetchQuery(
+      fetchJobsQuery({ role: 'company_admin', status: 'open' })
+    );
+    dispatch(setCurrentJobs({ jobs }));
+    toast.success('Job deleted successfully!');
+    return redirect('/company-dashboard/');
+  } catch (error) {
+    console.log(error);
+    const errorMessage =
+      error?.response?.data?.message || 'Failed to delete job!';
+    toast.error(errorMessage);
+    return error;
+  }
+}
+
 export default SingleJob;

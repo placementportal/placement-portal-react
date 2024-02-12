@@ -1,11 +1,18 @@
 import { useLoaderData } from 'react-router-dom';
 import SingleJobApplication from './SingleJobApplication';
+import { PlacementModal } from '..';
+import { useState } from 'react';
 
 const ApplicationsContainer = () => {
   const { jobsWithApplications } = useLoaderData();
+  const [modalData, setModalData] = useState({
+    onCampus: true,
+    action: 'create',
+  });
 
   return (
     <div>
+      <PlacementModal modalData={modalData} />
       {jobsWithApplications.map((job) => {
         const { _id, profile, openingsCount, deadline, applications } = job;
         return (
@@ -16,6 +23,7 @@ const ApplicationsContainer = () => {
             openingsCount={openingsCount}
             deadline={deadline}
             applications={applications}
+            setModalData={setModalData}
           />
         );
       })}

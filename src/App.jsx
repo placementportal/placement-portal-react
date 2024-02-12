@@ -18,6 +18,7 @@ import { action as loginAction } from './pages/Login';
 import { action as jobsAction } from './pages/Jobs';
 import { action as companyDBAction } from './pages/CompanyDashboard';
 import { action as studentDetailsAction } from './pages/StudentDetails';
+import { action as companyApplicationAction } from './pages/JobApplications';
 
 import { loader as loginLoader } from './pages/Login';
 import { loader as companyDBLoader } from './pages/CompanyDashboard';
@@ -77,6 +78,7 @@ const router = createBrowserRouter([
         path: 'applications',
         element: <JobApplications />,
         loader: jobsApplicationsLoader(queryClient, store),
+        action: companyApplicationAction(queryClient, store),
       },
     ],
   },

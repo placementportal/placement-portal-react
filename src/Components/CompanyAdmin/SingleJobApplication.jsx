@@ -7,6 +7,7 @@ const SingleJobApplication = ({
   openingsCount,
   deadline,
   applications,
+  setModalData,
 }) => {
   let pending = [],
     shortlisted = [],
@@ -39,8 +40,18 @@ const SingleJobApplication = ({
         <span>Openings Count: {openingsCount}</span>
       </p>
       <div role="tablist" className="tabs tabs-lifted">
-        <TabContent jobId={jobId} jobType="pending" arr={pending} />
-        <TabContent jobId={jobId} jobType="shortlisted" arr={shortlisted} />
+        <TabContent
+          jobId={jobId}
+          jobType="pending"
+          arr={pending}
+          setModalData={setModalData}
+        />
+        <TabContent
+          jobId={jobId}
+          jobType="shortlisted"
+          arr={shortlisted}
+          setModalData={setModalData}
+        />
         <TabContent jobId={jobId} jobType="hired" arr={hired} />
         <TabContent jobId={jobId} jobType="rejected" arr={rejected} />
       </div>
@@ -48,7 +59,7 @@ const SingleJobApplication = ({
   );
 };
 
-const TabContent = ({ jobType, jobId, arr }) => {
+const TabContent = ({ jobType, jobId, arr, setModalData }) => {
   return (
     <>
       <input
@@ -99,14 +110,22 @@ const TabContent = ({ jobType, jobId, arr }) => {
                             action="shortlist"
                             applicationId={_id}
                           />
-                          <ActionButton action="hire" applicationId={_id} />
+                          <ActionButton
+                            action="hire"
+                            applicationId={_id}
+                            setModalData={setModalData}
+                          />
                           <ActionButton action="reject" applicationId={_id} />
                         </td>
                       ) : (
                         jobType == 'shortlisted' && (
                           <td className="flex flex-wrap gap-2">
-                            <ActionButton action="hire" jobId={jobId} />
-                            <ActionButton action="reject" jobId={jobId} />
+                            <ActionButton
+                              action="hire"
+                              applicationId={_id}
+                              setModalData={setModalData}
+                            />
+                            <ActionButton action="reject" applicationId={_id} />
                           </td>
                         )
                       )}
@@ -124,7 +143,7 @@ const TabContent = ({ jobType, jobId, arr }) => {
   );
 };
 
-const ActionButton = ({ action, applicationId }) => {
+const ActionButton = ({ action, applicationId, setModalData }) => {
   let btnClass = 'btn btn-sm capitalize ';
   switch (action) {
     case 'hire':
@@ -141,7 +160,18 @@ const ActionButton = ({ action, applicationId }) => {
   return (
     <button
       className={btnClass}
-      onClick={() => handleAction(applicationId, action)}
+      onClick={() => {
+        if (action === 'hire') {
+          setModalData({
+            onCampus: true,
+            action: 'create',
+            applicationId,
+          });
+          document.getElementById('placementModal').showModal();
+        } else {
+          handleAction(applicationId, action);
+        }
+      }}
     >
       {action}
     </button>
@@ -149,7 +179,7 @@ const ActionButton = ({ action, applicationId }) => {
 };
 
 async function handleAction(applicationId, action) {
-  const url = `/company/applications/${applicationId}?action=${action}`;
+  const url = `/company/applications/${applicationId}/action/${action}`;
   try {
     const { data } = await customFetch.patch(url);
     const message = data?.message || 'successfully performed action!';

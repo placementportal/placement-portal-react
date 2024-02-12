@@ -141,3 +141,15 @@ export function fetchJobsQuery({ role, status }) {
     },
   };
 }
+
+export function fetchCourseOptions() {
+  const url = `/courses/options`;
+
+  return {
+    queryKey: ['courseOptions'],
+    queryFn: async () => {
+      const { data } = await customFetch.get(url);
+      return data;
+    },
+  };
+}

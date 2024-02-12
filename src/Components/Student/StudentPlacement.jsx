@@ -1,19 +1,23 @@
-import { Form, redirect } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 import { FaEdit, FaTrash, FaPlusSquare } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQueryClient } from '@tanstack/react-query';
 
-import { FormInput, FileInput, DateInput, NumberInput } from '../';
-import { formatDate, customFetch, fetchStudentPlacements } from '../../utils';
+import { customFetch, fetchStudentPlacements } from '../../utils';
 import { setPlacements } from '../../features/studentProfile/studentProfileSlice';
+import PlacementModal from './PlacementModal';
 
 const StudentPlacement = () => {
   const placements = useSelector(
     (state) => state?.studentProfileState?.placements
   );
-  const [modalData, setModalData] = useState({ action: 'create' });
+  const [modalData, setModalData] = useState({
+    action: 'create',
+    onCampus: false,
+  });
+
   return (
     <>
       <input
@@ -31,7 +35,7 @@ const StudentPlacement = () => {
           <button
             className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
             onClick={() => {
-              setModalData({ action: 'create' });
+              setModalData({ action: 'create', onCampus: false });
               document.getElementById('placementModal').showModal();
             }}
           >
@@ -65,6 +69,7 @@ const PlacementContainer = ({ placement, setModalData }) => {
     package: packageAMT,
     offerLetter,
     joiningLetter,
+    isOnCampus,
   } = placement;
   let { joiningDate } = placement;
 
@@ -77,31 +82,36 @@ const PlacementContainer = ({ placement, setModalData }) => {
     <div className="max-w-80 sm:max-w-96 rounded border shadow p-4">
       <div className="flex justify-between">
         <h3 className="text-xl font-semibold tracking-wider">{jobProfile}</h3>
-        <div className="flex flex-row gap-x-2">
-          <button
-            onClick={() => {
-              setModalData({
-                action: 'update',
-                placement,
-              });
-              document.getElementById('placementFormError').innerText = '';
-              document.getElementById('placementModal').showModal();
-            }}
-          >
-            <FaEdit />
-          </button>
-          <button
-            onClick={() =>
-              handleDeletePlacement({
-                dispatch,
-                queryClient,
-                id: placement._id,
-              })
-            }
-          >
-            <FaTrash />
-          </button>
-        </div>
+        {isOnCampus ? (
+          <p className="badge-success text-white rounded px-2">on campus</p>
+        ) : (
+          <div className="flex flex-row gap-x-2">
+            <button
+              onClick={() => {
+                setModalData({
+                  action: 'update',
+                  placement,
+                  onCampus: false,
+                });
+                document.getElementById('placementFormError').innerText = '';
+                document.getElementById('placementModal').showModal();
+              }}
+            >
+              <FaEdit />
+            </button>
+            <button
+              onClick={() =>
+                handleDeletePlacement({
+                  dispatch,
+                  queryClient,
+                  id: placement._id,
+                })
+              }
+            >
+              <FaTrash />
+            </button>
+          </div>
+        )}
       </div>
       <div className="mt-2 flex flex-col gap-y-2">
         <p>
@@ -125,105 +135,19 @@ const PlacementContainer = ({ placement, setModalData }) => {
         {offerLetter && (
           <p>
             <span className="font-medium">Offer Letter: </span>
-            <a href={offerLetter}>View File</a>
+            <a href={offerLetter} target="_blank" className="link">View File</a>
           </p>
         )}
         {joiningLetter && (
           <p>
             <span className="font-medium">Joining Letter: </span>
-            <a href={joiningLetter}>View File</a>
+            <a href={joiningLetter} target="_blank" className="link">
+              View File
+            </a>
           </p>
         )}
       </div>
     </div>
-  );
-};
-
-const PlacementModal = ({ modalData }) => {
-  const { action, placement } = modalData;
-  return (
-    <dialog id="placementModal" className="modal">
-      <div className="modal-box pb-0">
-        <h3 className="font-bold text-lg underline capitalize">
-          {action} placement
-        </h3>
-        <Form
-          method="POST"
-          className="mt-2 flex flex-col gap-4"
-          name="placementForm"
-          encType="multipart/form-data"
-        >
-          {action === 'update' && (
-            <input
-              type="text"
-              name="placementId"
-              defaultValue={placement?._id}
-              hidden
-            />
-          )}
-          <FormInput
-            label="job profile"
-            name="jobProfile"
-            type="text"
-            defaultValue={placement?.jobProfile}
-          />
-          <FormInput
-            label="company"
-            name="company"
-            type="text"
-            defaultValue={placement?.company}
-          />
-          <FormInput
-            label="location"
-            name="location"
-            type="text"
-            defaultValue={placement?.location}
-          />
-          <NumberInput
-            label="package (LPA)"
-            name="package"
-            defaultValue={placement?.package}
-          />
-          <FileInput
-            label="offer letter"
-            name="offerLetter"
-            accept="application/pdf"
-          />
-          <FileInput
-            label="joining letter"
-            name="joiningLetter"
-            accept="application/pdf"
-          />
-          <DateInput
-            label="joining Date"
-            name="joiningDate"
-            size="w-fit"
-            defaultValue={
-              placement?.joiningDate &&
-              formatDate(new Date(placement?.joiningDate))
-            }
-            isRequired={false}
-          />
-          <div id="placementFormError" className="text-red-500"></div>
-          <button
-            type="submit"
-            className="btn btn-success text-white capitalize self-center btn-sm h-9 px-4"
-            name="intent"
-            value={`${action}Placement`}
-          >
-            {action}
-          </button>
-        </Form>
-        <div className="modal-action">
-          <form method="dialog">
-            {/* if there is a button in form, it will close the modal */}
-            <button className="btn btn-lg btn-circle btn-ghost absolute right-2 top-2">
-              ✕
-            </button>
-          </form>
-        </div>
-      </div>
-    </dialog>
   );
 };
 

@@ -26,7 +26,7 @@ export function getCourseOptions(courses) {
 export function getDepartmentOptions(depts) {
   const options = [];
   for (let dept of depts) {
-    options.push({ text: dept.departmentName, value: dept._id });
+    options.push({ text: dept.departmentName, value: dept.departmentId });
   }
   return options;
 }
@@ -34,7 +34,7 @@ export function getDepartmentOptions(depts) {
 export function getBatchOptions(batches) {
   const options = [];
   for (let batch of batches) {
-    options.push({ text: batch.batchYear, value: batch._id });
+    options.push({ text: batch.batchYear, value: batch.batchId });
   }
   return options;
 }
