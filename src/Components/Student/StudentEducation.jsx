@@ -5,8 +5,13 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const StudentEducation = () => {
-  const { courseLevel, isLateralEntry, semestersCount, educationDetails } =
-    useSelector((state) => state.studentProfileState);
+  const {
+    courseLevel,
+    isLateralEntry,
+    semestersCount,
+    educationDetails,
+    type,
+  } = useSelector((state) => state.studentProfileState);
 
   let highschool, intermediate, diploma, graduation, postGraduation;
 
@@ -37,15 +42,15 @@ const StudentEducation = () => {
         role="tab"
         className="tab capitalize sm:text-lg text-blue-500"
         aria-label="education"
-        defaultChecked={false}
+        defaultChecked={type === 'public'}
       />
 
       <div role="tabpanel" className="mt-4 tab-content">
-        <PastScoreModal modalData={modalData} />
+        {type === 'private' && <PastScoreModal modalData={modalData} />}
 
         <div className="flex flex-wrap justify-between">
           <h3 className="text-2xl font-medium mb-4">Education Details</h3>
-          {newOptions.length ? (
+          {type === 'private' && newOptions.length ? (
             <div className="dropdown">
               <div
                 tabIndex={0}
@@ -75,6 +80,7 @@ const StudentEducation = () => {
               ? graduation?.scores
               : postGraduation?.scores
           }
+          type={type}
         />
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
           {courseLevel === 'postGraduation' && graduation && (
@@ -82,6 +88,7 @@ const StudentEducation = () => {
               label="graduation"
               data={graduation}
               setModalData={setModalData}
+              type={type}
             />
           )}
 
@@ -90,6 +97,7 @@ const StudentEducation = () => {
               label="diploma"
               data={diploma}
               setModalData={setModalData}
+              type={type}
             />
           )}
 
@@ -98,6 +106,7 @@ const StudentEducation = () => {
               label="intermediate"
               data={intermediate}
               setModalData={setModalData}
+              type={type}
             />
           )}
 
@@ -106,6 +115,7 @@ const StudentEducation = () => {
               label="highschool"
               data={highschool}
               setModalData={setModalData}
+              type={type}
             />
           )}
         </div>

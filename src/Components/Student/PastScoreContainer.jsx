@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useQueryClient } from '@tanstack/react-query';
 import { setEducationDetails } from '../../features/studentProfile/studentProfileSlice';
 
-const PastScoreContainer = ({ label, data, setModalData }) => {
+const PastScoreContainer = ({ type, label, data, setModalData }) => {
   const { year, score, scale, board, institute, stream } = data;
 
   const queryClient = useQueryClient();
@@ -19,24 +19,26 @@ const PastScoreContainer = ({ label, data, setModalData }) => {
         <h3 className="capitalize tracking-wide text-xl font-semibold">
           {label}
         </h3>
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => {
-              setModalData({ action: 'update', data, label });
-              document.getElementById('pastScoreError').innerText = '';
-              document.getElementById('pastScoreModal').showModal();
-            }}
-          >
-            <FaEdit />
-          </button>
-          <button
-            onClick={() =>
-              handleDeletePastEducation({ queryClient, dispatch, label })
-            }
-          >
-            <FaTrash />
-          </button>
-        </div>
+        {type === 'private' && (
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => {
+                setModalData({ action: 'update', data, label });
+                document.getElementById('pastScoreError').innerText = '';
+                document.getElementById('pastScoreModal').showModal();
+              }}
+            >
+              <FaEdit />
+            </button>
+            <button
+              onClick={() =>
+                handleDeletePastEducation({ queryClient, dispatch, label })
+              }
+            >
+              <FaTrash />
+            </button>
+          </div>
+        )}
       </div>
       <div className="mt-2 flex flex-col gap-y-1">
         <p>

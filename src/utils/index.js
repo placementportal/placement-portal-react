@@ -14,7 +14,8 @@ import {
   fetchDeptQuery,
   fetchBatchQuery,
   fetchApplicationsQuery,
-  fetchStudentProfile,
+  fetchStudentPrivateProfile,
+  fetchStudentPublicProfile,
   fetchStudentPersonal,
   fetchStudentEducation,
   fetchStudentExperiences,
@@ -23,6 +24,8 @@ import {
   fetchStudentSkills,
   fetchStudentAchievements,
   fetchCourseOptions,
+  fetchSingleJobQuery,
+  fetchSingleJobApplicationsQuery,
 } from './fetchQueries';
 
 import { formatDate } from './jsUtils';
@@ -43,7 +46,8 @@ export {
   fetchDeptQuery,
   fetchBatchQuery,
   fetchApplicationsQuery,
-  fetchStudentProfile,
+  fetchStudentPrivateProfile,
+  fetchStudentPublicProfile,
   fetchStudentPersonal,
   fetchStudentEducation,
   fetchStudentExperiences,
@@ -52,6 +56,8 @@ export {
   fetchStudentSkills,
   fetchStudentAchievements,
   fetchCourseOptions,
+  fetchSingleJobQuery,
+  fetchSingleJobApplicationsQuery,
 
   /* JS utils */
   formatDate,

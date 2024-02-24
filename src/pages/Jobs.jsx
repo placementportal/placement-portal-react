@@ -37,13 +37,15 @@ export const action = (queryClient, store) => {
         store.dispatch(setCurrentJobs({ jobs }));
         store.dispatch(resetJobApply());
         document.getElementById('jobApplicationModal').close();
+        document.getElementById('jobApplicationFormError').innerText = '';
         toast.success('Applied successfully!');
         return redirect('/student-dashboard/jobs');
       } catch (error) {
         console.log(error);
         const errorMessage =
           error?.response?.data?.message || 'Failed to apply for job!';
-        toast.error(errorMessage);
+        document.getElementById('jobApplicationFormError').innerText =
+          errorMessage;
         return error;
       }
     }

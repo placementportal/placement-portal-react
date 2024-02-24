@@ -6,12 +6,12 @@ const MultipleInputs = ({
   manageFields,
   labelColor = 'black',
 }) => {
-  const labelClass = 'label-text capitalize ' + 'text-' + labelColor;
+  const labelClass = 'font-medium capitalize ' + 'text-' + labelColor;
 
   return (
     <div className="form-control">
-      <div className="flex justify-between">
-        <label htmlFor={name} className="label text-lg">
+      <div className="flex items-center justify-between sm:justify-normal sm:gap-x-40">
+        <label htmlFor={name} className="label">
           <span className={labelClass}>{label}</span>
         </label>
         <button
@@ -24,14 +24,14 @@ const MultipleInputs = ({
           + Add Field
         </button>
       </div>
-      <div id={`${name}Container`} className="flex gap-4 flex-wrap">
+      <div id={`${name}Container`} className="mt-4 flex gap-4 flex-wrap">
         {defaultValue.map((value, idx) => {
           return (
             <input
               type={type}
               name={`${name}`}
               defaultValue={value}
-              className={`input input-bordered w-2/5`}
+              className={`input input-bordered`}
               key={value + idx}
               required
             />

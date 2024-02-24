@@ -28,7 +28,7 @@ export { default as CurrentCourseEducation } from './Student/CurrentCourseEducat
 export { default as PlacementModal } from './Student/PlacementModal';
 
 export { default as JobsContainer } from './JobsContainer';
-export { default as SingleJob } from './SingleJob';
+export { default as SingleJob } from './SingleJobContainer';
 export { default as JobApplicationForm } from './Student/JobApplicationForm';
 export { default as CreateJobForm } from './CompanyAdmin/CreateJobForm';
 

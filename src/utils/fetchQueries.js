@@ -1,10 +1,22 @@
 import { customFetch } from './axiosSetup';
 
-export function fetchStudentProfile() {
+export function fetchStudentPrivateProfile() {
   return {
     queryKey: ['privateProfile'],
     queryFn: async () => {
       const { data } = await customFetch.get('/student/profile');
+      return data;
+    },
+  };
+}
+
+export function fetchStudentPublicProfile({ applicationId, studentId }) {
+  return {
+    queryKey: ['student', studentId],
+    queryFn: async () => {
+      const { data } = await customFetch.get(
+        `/company/applications/${applicationId}/students/${studentId}`
+      );
       return data;
     },
   };
@@ -92,6 +104,18 @@ export function fetchApplicationsQuery() {
   };
 }
 
+export function fetchSingleJobApplicationsQuery(jobId) {
+  const url = `/company/jobs/${jobId}/applications`;
+
+  return {
+    queryKey: [jobId, 'applications'],
+    queryFn: async () => {
+      const { data } = await customFetch.get(url);
+      return data;
+    },
+  };
+}
+
 export function fetchCoursesQuery() {
   const url = `/batchDept/course`;
 
@@ -135,6 +159,20 @@ export function fetchJobsQuery({ role, status }) {
 
   return {
     queryKey: ['jobs', status],
+    queryFn: async () => {
+      const { data } = await customFetch.get(url);
+      return data;
+    },
+  };
+}
+
+export function fetchSingleJobQuery({ role, jobId }) {
+  let url;
+  if (role == 'student') url = `/student/jobs/${jobId}`;
+  else if (role == 'company_admin') url = `/company/jobs/${jobId}`;
+
+  return {
+    queryKey: [jobId],
     queryFn: async () => {
       const { data } = await customFetch.get(url);
       return data;

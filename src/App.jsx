@@ -10,21 +10,32 @@ import {
   StudentDetails,
   JobsPage,
   JobApplications,
+  PublicStudentProfile,
+  SingleJob,
+  JobCreatePage,
+  JobEditPage,
+  SingleJobApplications,
 } from './pages/index';
 
 import { store } from './store';
 
 import { action as loginAction } from './pages/Login';
 import { action as jobsAction } from './pages/Jobs';
-import { action as companyDBAction } from './pages/CompanyDashboard';
+import { action as createJobAction } from './pages/JobCreatePage';
+import { action as editJobAction } from './pages/JobEditPage';
 import { action as studentDetailsAction } from './pages/StudentDetails';
 import { action as companyApplicationAction } from './pages/JobApplications';
+import { action as singleJobAction } from './pages/SingleJob';
 
 import { loader as loginLoader } from './pages/Login';
 import { loader as companyDBLoader } from './pages/CompanyDashboard';
 import { loader as studentDBloader } from './pages/StudentDetails';
 import { loader as jobsLoader } from './pages/Jobs';
 import { loader as jobsApplicationsLoader } from './pages/JobApplications';
+import { loader as studentProfileLoader } from './pages/PublicStudentProfile';
+import { loader as singleJobLoader } from './pages/SingleJob';
+import { loader as editJobLoader } from './pages/JobEditPage';
+import { loader as singleJobApplicationsLoader } from './pages/SingleJobApplications';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -53,9 +64,21 @@ const router = createBrowserRouter([
       },
       {
         path: 'jobs',
-        element: <JobsPage />,
-        loader: jobsLoader(queryClient, store),
-        action: jobsAction(queryClient, store),
+        children: [
+          {
+            path: '',
+            element: <JobsPage />,
+            loader: jobsLoader(queryClient, store),
+            action: jobsAction(queryClient, store),
+            index: true,
+          },
+          {
+            path: ':jobId',
+            element: <SingleJob />,
+            loader: singleJobLoader(queryClient, store),
+            action: singleJobAction(QueryClient, store),
+          },
+        ],
       },
     ],
   },
@@ -67,18 +90,61 @@ const router = createBrowserRouter([
     path: '/company-dashboard',
     element: <CompanyDashboard />,
     loader: companyDBLoader(queryClient, store),
-    action: companyDBAction(queryClient, store),
     children: [
       {
+        path: 'create-job',
+        element: <JobCreatePage />,
+        action: createJobAction(queryClient, store),
+      },
+      {
+        path: 'edit-job/:jobId',
+        element: <JobEditPage />,
+        loader: editJobLoader(queryClient, store),
+        action: editJobAction(queryClient, store),
+      },
+      {
         path: 'jobs',
-        element: <JobsPage />,
-        loader: jobsLoader(queryClient, store),
+        children: [
+          {
+            path: '',
+            element: <JobsPage />,
+            loader: jobsLoader(queryClient, store),
+            index: true,
+          },
+          {
+            path: ':jobId',
+            children: [
+              {
+                path: '',
+                index: true,
+                element: <SingleJob />,
+                loader: singleJobLoader(queryClient, store),
+              },
+              {
+                path: 'applications',
+                element: <SingleJobApplications />,
+                loader: singleJobApplicationsLoader(queryClient, store),
+              },
+            ],
+          },
+        ],
       },
       {
         path: 'applications',
-        element: <JobApplications />,
-        loader: jobsApplicationsLoader(queryClient, store),
-        action: companyApplicationAction(queryClient, store),
+        children: [
+          {
+            path: '',
+            element: <JobApplications />,
+            loader: jobsApplicationsLoader(queryClient, store),
+            action: companyApplicationAction(queryClient, store),
+            index: true,
+          },
+          {
+            path: ':applicationId/students/:studentId',
+            element: <PublicStudentProfile />,
+            loader: studentProfileLoader(queryClient, store),
+          },
+        ],
       },
     ],
   },

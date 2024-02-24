@@ -1,4 +1,4 @@
-import SingleJob from './SingleJob';
+import SingleJob from './SingleJobContainer';
 import { useSelector } from 'react-redux';
 
 const JobsContainer = () => {

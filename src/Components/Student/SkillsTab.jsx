@@ -9,7 +9,7 @@ import { customFetch, fetchStudentSkills } from '../../utils';
 import { useQueryClient } from '@tanstack/react-query';
 
 const SkillsTab = () => {
-  const { skills } = useSelector((state) => state?.studentProfileState);
+  const { skills, type } = useSelector((state) => state?.studentProfileState);
 
   const [modalData, setModalData] = useState({ action: 'create' });
   return (
@@ -26,17 +26,19 @@ const SkillsTab = () => {
         <SkillModal modalData={modalData} />
         <div className="flex justify-between">
           <h3 className="text-2xl font-medium">Skills</h3>
-          <button
-            className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
-            onClick={() => {
-              setModalData({ action: 'create' });
-              document.getElementById('skillModal').showModal();
-              document.getElementById('skillFormError').innerText = '';
-            }}
-          >
-            <FaPlusSquare />
-            New
-          </button>
+          {type === 'private' && (
+            <button
+              className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
+              onClick={() => {
+                setModalData({ action: 'create' });
+                document.getElementById('skillModal').showModal();
+                document.getElementById('skillFormError').innerText = '';
+              }}
+            >
+              <FaPlusSquare />
+              New
+            </button>
+          )}
         </div>
 
         {skills?.length ? (
@@ -46,6 +48,7 @@ const SkillsTab = () => {
                 key={index}
                 skill={skill}
                 setModalData={setModalData}
+                type={type}
               />
             ))}
           </div>
@@ -57,29 +60,31 @@ const SkillsTab = () => {
   );
 };
 
-const SkillContainer = ({ skill, setModalData }) => {
+const SkillContainer = ({ skill, setModalData, type }) => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
 
   return (
     <div className="flex justify-between py-2 px-4 border-b-2 border-black w-full">
       <h4>{skill}</h4>
-      <div className="flex gap-x-2">
-        <button
-          onClick={() => {
-            setModalData({ action: 'update', skill });
-            document.getElementById('skillModal').showModal();
-            document.getElementById('skillFormError').innerText = '';
-          }}
-        >
-          <FaEdit />
-        </button>
-        <button
-          onClick={() => handleDeleteSkill({ queryClient, dispatch, skill })}
-        >
-          <FaTrash />
-        </button>
-      </div>
+      {type === 'private' && (
+        <div className="flex gap-x-2">
+          <button
+            onClick={() => {
+              setModalData({ action: 'update', skill });
+              document.getElementById('skillModal').showModal();
+              document.getElementById('skillFormError').innerText = '';
+            }}
+          >
+            <FaEdit />
+          </button>
+          <button
+            onClick={() => handleDeleteSkill({ queryClient, dispatch, skill })}
+          >
+            <FaTrash />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

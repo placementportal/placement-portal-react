@@ -10,7 +10,7 @@ export const customFetch = axios.create({
 
 customFetch.interceptors.response.use(function (response) {
   if (response.status === 401 || response.status === 403) {
-    redirect('/');
+    return redirect(window.location.origin);
   }
   return response;
 });

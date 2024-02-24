@@ -6,6 +6,7 @@ const CurrentCourseEducation = ({
   isLateralEntry,
   semestersCount,
   data,
+  type,
 }) => {
   return (
     <div>
@@ -32,23 +33,25 @@ const CurrentCourseEducation = ({
           hidden
         />
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {getFormFields(semestersCount, isLateralEntry, data)}
+          {getFormFields({ semestersCount, isLateralEntry, data, type })}
         </div>
         <p id="currentCourseError"></p>
-        <button
-          type="submit"
-          className="btn btn-success max-w-fit self-end text-white btn-sm h-9 px-4"
-          name="intent"
-          value="updateCurrentEducation"
-        >
-          Update
-        </button>
+        {type === 'private' && (
+          <button
+            type="submit"
+            className="btn btn-success max-w-fit self-end text-white btn-sm h-9 px-4"
+            name="intent"
+            value="updateCurrentEducation"
+          >
+            Update
+          </button>
+        )}
       </Form>
     </div>
   );
 };
 
-function getFormFields(semestersCount, isLateralEntry, data) {
+function getFormFields({ semestersCount, isLateralEntry, data, type }) {
   const fields = [];
   let sem = isLateralEntry ? 3 : 1;
   for (let i = 0; i < semestersCount; i++) {
@@ -58,6 +61,7 @@ function getFormFields(semestersCount, isLateralEntry, data) {
         label={`Semester ${sem}`}
         data={data?.[i]}
         semesterNum={sem}
+        type={type}
       />
     );
     ++sem;

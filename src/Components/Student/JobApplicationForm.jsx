@@ -32,6 +32,7 @@ const JobApplicationForm = () => {
             name="resumeFile"
             accept="application/pdf"
           />
+          <div id="jobApplicationFormError" className="text-red-500"></div>
           <button
             type="submit"
             className="btn btn-success self-center btn-sm h-9 px-4"

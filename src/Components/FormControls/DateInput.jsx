@@ -8,7 +8,7 @@ const DateInput = ({
   isRequired = true,
   labelColor = 'black',
 }) => {
-  const labelClass = 'label-text capitalize ' + 'text-' + labelColor;
+  const labelClass = 'font-medium capitalize ' + 'text-' + labelColor;
 
   return (
     <div className="form-control">

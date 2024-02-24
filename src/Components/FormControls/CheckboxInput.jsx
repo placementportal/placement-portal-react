@@ -1,8 +1,8 @@
 const CheckboxInput = ({ label, name, options, defaultValues, emptyMsg }) => {
   return (
-    <div className="form-control w-full max-w-xs">
+    <div className="form-control w-[100%]">
       <label className="label">
-        <span className="label-text">{label}</span>
+        <span className="font-medium">{label}</span>
       </label>
 
       <div className="flex gap-x-4">
@@ -26,7 +26,7 @@ const CheckboxInput = ({ label, name, options, defaultValues, emptyMsg }) => {
             );
           })
         ) : (
-          <p className="ml-4 font-light text-sm">{emptyMsg}</p>
+          <p className="ml-4 font-light">{emptyMsg}</p>
         )}
       </div>
     </div>

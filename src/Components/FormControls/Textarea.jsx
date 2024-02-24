@@ -5,7 +5,7 @@ const Textarea = ({
   defaultValue,
   labelColor = 'black',
 }) => {
-  const labelClass = 'label-text capitalize ' + 'text-' + labelColor;
+  const labelClass = 'label-text whitespace-pre-line capitalize ' + 'text-' + labelColor;
   return (
     <div className="form-control">
       <label htmlFor={name} className="label">

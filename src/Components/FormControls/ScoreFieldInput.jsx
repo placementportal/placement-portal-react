@@ -1,4 +1,4 @@
-const ScoreFieldInput = ({ label, data, semesterNum }) => {
+const ScoreFieldInput = ({ type, label, data, semesterNum }) => {
   return (
     <div className="form-control">
       <label className="label">
@@ -6,6 +6,7 @@ const ScoreFieldInput = ({ label, data, semesterNum }) => {
       </label>
       <div className="flex flex-col gap-4">
         <input
+          disabled={type === 'public'}
           type="number"
           name={`gpa-${semesterNum}`}
           placeholder="GPA Score"
@@ -16,6 +17,7 @@ const ScoreFieldInput = ({ label, data, semesterNum }) => {
           className="w-28 border-b-2 border-b-black focus:border-b-blue-500 focus:outline-none"
         />
         <input
+          disabled={type === 'public'}
           type="number"
           name={`backsCount-${semesterNum}`}
           min="0"

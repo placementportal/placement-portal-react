@@ -8,8 +8,6 @@ import { logoutUser } from '../features/user/userSlice';
 import { resetStudentProfile } from '../features/studentProfile/studentProfileSlice';
 import { customFetch } from '../utils/axiosSetup';
 
-import { resetJobModalData } from '../features/jobCreateForm/jobCreateSlice';
-
 const Navbar = ({ options }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -81,9 +79,8 @@ const Navbar = ({ options }) => {
           <button
             className="btn btn-sm btn-primary"
             onClick={() => {
-              dispatch(resetJobModalData());
-              document.getElementById('jobCreateFormError').innerText = '';
-              document.getElementById('createJobModal').showModal();
+              // window.location.href = '/company-dashboard/create-job?action=create';
+              navigate('create-job')
             }}
           >
             Create Job

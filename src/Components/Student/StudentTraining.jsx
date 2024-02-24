@@ -11,8 +11,8 @@ import { formatDate, customFetch, fetchStudentTrainings } from '../../utils';
 import { setTrainings } from '../../features/studentProfile/studentProfileSlice';
 
 const StudentTraining = () => {
-  const trainings = useSelector(
-    (state) => state?.studentProfileState?.trainings
+  const { trainings, type } = useSelector(
+    (state) => state?.studentProfileState
   );
   const [modalData, setModalData] = useState({ action: 'create' });
 
@@ -29,17 +29,19 @@ const StudentTraining = () => {
         <TrainingModal modalData={modalData} />
         <div className="flex justify-between">
           <h3 className="text-2xl font-medium">Trainings</h3>
-          <button
-            className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
-            onClick={() => {
-              setModalData({ action: 'create' });
-              document.getElementById('trainingFormError').innerText = '';
-              document.getElementById('trainingModal').showModal();
-            }}
-          >
-            <FaPlusSquare />
-            New
-          </button>
+          {type === 'private' && (
+            <button
+              className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
+              onClick={() => {
+                setModalData({ action: 'create' });
+                document.getElementById('trainingFormError').innerText = '';
+                document.getElementById('trainingModal').showModal();
+              }}
+            >
+              <FaPlusSquare />
+              New
+            </button>
+          )}
         </div>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:gap-8 lg:grid-cols-3">
           {trainings?.length ? (
@@ -48,6 +50,7 @@ const StudentTraining = () => {
                 key={training._id}
                 training={training}
                 setModalData={setModalData}
+                type={type}
               />
             ))
           ) : (
@@ -59,7 +62,7 @@ const StudentTraining = () => {
   );
 };
 
-const TrainingContainer = ({ training, setModalData }) => {
+const TrainingContainer = ({ training, setModalData, type }) => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
   const { trainingName, organisation, certificate } = training;
@@ -72,26 +75,32 @@ const TrainingContainer = ({ training, setModalData }) => {
     <div className="max-w-80 sm:max-w-96 rounded border shadow p-4">
       <div className="flex justify-between">
         <h3 className="text-xl font-semibold tracking-wider">{trainingName}</h3>
-        <div className="flex flex-row gap-x-2">
-          <button
-            onClick={() => {
-              setModalData({
-                action: 'update',
-                training,
-              });
-              document.getElementById('trainingModal').showModal();
-            }}
-          >
-            <FaEdit />
-          </button>
-          <button
-            onClick={() =>
-              handleDeleteTraining({ queryClient, dispatch, id: training._id })
-            }
-          >
-            <FaTrash />
-          </button>
-        </div>
+        {type === 'private' && (
+          <div className="flex flex-row gap-x-2">
+            <button
+              onClick={() => {
+                setModalData({
+                  action: 'update',
+                  training,
+                });
+                document.getElementById('trainingModal').showModal();
+              }}
+            >
+              <FaEdit />
+            </button>
+            <button
+              onClick={() =>
+                handleDeleteTraining({
+                  queryClient,
+                  dispatch,
+                  id: training._id,
+                })
+              }
+            >
+              <FaTrash />
+            </button>
+          </div>
+        )}
       </div>
       <div className="mt-2 flex flex-col gap-y-2">
         <p>

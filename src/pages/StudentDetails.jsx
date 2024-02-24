@@ -2,7 +2,6 @@ import { redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import {
-  fetchStudentProfile,
   customFetch,
   fetchStudentPersonal,
   fetchStudentEducation,
@@ -11,6 +10,7 @@ import {
   fetchStudentTrainings,
   fetchStudentSkills,
   fetchStudentAchievements,
+  fetchStudentPrivateProfile,
 } from '../utils';
 
 import {
@@ -356,17 +356,18 @@ export const loader = (queryClient, store) => {
   return async function () {
     try {
       const { profileDetails } = await queryClient.ensureQueryData(
-        fetchStudentProfile()
+        fetchStudentPrivateProfile()
       );
-      store.dispatch(initialProfileSetup(profileDetails));
+      store.dispatch(initialProfileSetup({ profileDetails, type: 'private' }));
       return {
         profileDetails,
       };
     } catch (error) {
       console.log(error.response);
-      if (error.response.status === 401 || error.response.status === 403)
-        return redirect('/');
-      return null;
+      const errorMessage =
+        error?.response?.data?.message || 'Failed to fetch student details!';
+      toast.error(errorMessage);
+      return error;
     }
   };
 };
@@ -397,20 +398,6 @@ const StudentDetails = () => {
         <SkillsTab />
         <AchievementsTab />
       </div>
-
-      {/* <StudentIntro />
-      <hr />
-      <StudentPersonal />
-      <hr />
-      <StudentEducation />
-      <hr />
-      <StudentPlacement />
-      <hr />
-      <StudentExperience />
-      <hr />
-      <StudentTraining />
-      <hr />
-      <SkillAndAchievements /> */}
     </div>
   );
 };

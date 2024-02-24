@@ -7,8 +7,10 @@ const jobSlice = createSlice({
   initialState: studentProfile,
   reducers: {
     initialProfileSetup: (state, action) => {
-      for (let key in action.payload) {
-        if (!state[key]) state[key] = action.payload[key];
+      const { profileDetails, type } = action.payload;
+      state.type = type;
+      for (let key in profileDetails) {
+        if (!state[key]) state[key] = profileDetails[key];
       }
     },
     setPersonalDetails: (state, action) => {

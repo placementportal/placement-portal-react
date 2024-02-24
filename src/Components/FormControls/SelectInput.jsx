@@ -23,7 +23,7 @@ const SelectInput = ({
   return (
     <div className="form-control max-w-xs">
       <label className="label">
-        <span className="label-text capitalize">{label}</span>
+        <span className="font-medium capitalize">{label}</span>
       </label>{' '}
       {options.length ? (
         <select
@@ -44,7 +44,7 @@ const SelectInput = ({
           })}
         </select>
       ) : (
-        <p className='ml-4 font-light text-sm'>{emptyMessage}</p>
+        <p className="ml-4 font-light">{emptyMessage}</p>
       )}
     </div>
   );

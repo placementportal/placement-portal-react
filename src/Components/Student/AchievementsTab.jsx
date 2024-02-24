@@ -9,7 +9,9 @@ import { customFetch, fetchStudentAchievements } from '../../utils';
 import { useQueryClient } from '@tanstack/react-query';
 
 const AchievementsTab = () => {
-  const { achievements } = useSelector((state) => state?.studentProfileState);
+  const { achievements, type } = useSelector(
+    (state) => state?.studentProfileState
+  );
   const [modalData, setModalData] = useState({ action: 'create' });
   return (
     <>
@@ -24,17 +26,19 @@ const AchievementsTab = () => {
         <AchievementModal modalData={modalData} />
         <div className="flex justify-between">
           <h3 className="text-2xl font-medium">Achievements</h3>
-          <button
-            className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
-            onClick={() => {
-              setModalData({ action: 'create' });
-              document.getElementById('achievementModal').showModal();
-              document.getElementById('achievementFormError').innerText = '';
-            }}
-          >
-            <FaPlusSquare />
-            New
-          </button>
+          {type === 'private' && (
+            <button
+              className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
+              onClick={() => {
+                setModalData({ action: 'create' });
+                document.getElementById('achievementModal').showModal();
+                document.getElementById('achievementFormError').innerText = '';
+              }}
+            >
+              <FaPlusSquare />
+              New
+            </button>
+          )}
         </div>
 
         {achievements?.length ? (
@@ -44,6 +48,7 @@ const AchievementsTab = () => {
                 achievement={achievement}
                 key={index}
                 setModalData={setModalData}
+                type={type}
               />
             ))}
           </div>
@@ -55,30 +60,32 @@ const AchievementsTab = () => {
   );
 };
 
-const AchievementContainer = ({ achievement, setModalData }) => {
+const AchievementContainer = ({ achievement, setModalData, type }) => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch();
   return (
     <div className="flex justify-between py-2 px-4 border-b-2 border-black w-full">
       <h4>{achievement}</h4>
-      <div className="flex gap-x-2">
-        <button
-          onClick={() => {
-            setModalData({ action: 'update', achievement });
-            document.getElementById('achievementModal').showModal();
-            document.getElementById('achievementFormError').innerText = '';
-          }}
-        >
-          <FaEdit />
-        </button>
-        <button
-          onClick={() =>
-            handleDeleteAchievement({ queryClient, dispatch, achievement })
-          }
-        >
-          <FaTrash />
-        </button>
-      </div>
+      {type === 'private' && (
+        <div className="flex gap-x-2">
+          <button
+            onClick={() => {
+              setModalData({ action: 'update', achievement });
+              document.getElementById('achievementModal').showModal();
+              document.getElementById('achievementFormError').innerText = '';
+            }}
+          >
+            <FaEdit />
+          </button>
+          <button
+            onClick={() =>
+              handleDeleteAchievement({ queryClient, dispatch, achievement })
+            }
+          >
+            <FaTrash />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

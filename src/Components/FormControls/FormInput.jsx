@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const FormInput = ({
   label,
   name,
@@ -7,7 +9,7 @@ const FormInput = ({
   isRequired = true,
   labelColor = 'black',
 }) => {
-  const labelClass = 'label-text capitalize ' + 'text-' + labelColor;
+  const labelClass = 'font-medium capitalize ' + 'text-' + labelColor;
 
   return (
     <div className="form-control">

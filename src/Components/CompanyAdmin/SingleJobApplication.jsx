@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import { customFetch } from '../../utils';
 import { toast } from 'react-toastify';
+import { FiExternalLink } from 'react-icons/fi';
 
 const SingleJobApplication = ({
   jobId,
@@ -34,7 +36,12 @@ const SingleJobApplication = ({
 
   return (
     <div className="py-4 px-8 flex flex-col gap-y-4">
-      <h3 className="text-xl font-medium tracking-wide underline">{profile}</h3>
+      <Link
+        to={`/company-dashboard/jobs/${jobId}`}
+        className="text-xl font-medium tracking-wide flex gap-x-2 items-center underline hover:link-primary"
+      >
+        {profile} <FiExternalLink />
+      </Link>
       <p className="flex gap-x-4">
         <span>Deadline: {new Date(deadline).toLocaleDateString()}</span>
         <span>Openings Count: {openingsCount}</span>
@@ -88,11 +95,24 @@ const TabContent = ({ jobType, jobId, arr, setModalData }) => {
               </thead>
               <tbody>
                 {arr.map((application) => {
-                  const { _id, applicantName, coverLetter, resume, portfolio } =
-                    application;
+                  const {
+                    _id,
+                    applicantName,
+                    applicantId,
+                    coverLetter,
+                    resume,
+                    portfolio,
+                  } = application;
                   return (
                     <tr key={_id}>
-                      <td>{applicantName}</td>
+                      <td>
+                        <a
+                          href={`applications/${_id}/students/${applicantId}`}
+                          className="link"
+                        >
+                          {applicantName}
+                        </a>
+                      </td>
                       <td>{coverLetter}</td>
                       <td className="link">
                         <a href={resume} target="_blank">

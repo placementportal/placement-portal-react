@@ -1,11 +1,11 @@
 import { useDispatch } from 'react-redux';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
+import { FiExternalLink } from 'react-icons/fi';
 import { Link, redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { setCurrentJobs, setJobApply } from '../features/jobs/jobsSlice';
-import { setJobModalData } from '../features/jobCreateForm/jobCreateSlice';
 import { useQueryClient } from '@tanstack/react-query';
 import { customFetch, fetchJobsQuery } from '../utils';
 
@@ -13,8 +13,6 @@ const SingleJob = ({ job, status, role }) => {
   const {
     _id,
     profile,
-    description,
-    openingsCount,
     applicationsCount,
     location,
     company,
@@ -31,14 +29,9 @@ const SingleJob = ({ job, status, role }) => {
     <div className="card gap-y-2 border-t border-b-slate-200 p-4 shadow-md hover:shadow-xl w-sm border-l-gray-700">
       {role == 'company_admin' && applicationsCount === 0 && (
         <div className="flex items-center gap-4 justify-end">
-          <button
-            onClick={() => {
-              dispatch(setJobModalData({ ...job }));
-              document.getElementById('createJobModal').showModal();
-            }}
-          >
+          <Link to={`/company-dashboard/edit-job/${_id}`}>
             <FaEdit />
-          </button>
+          </Link>
           <button
             onClick={() => handleDeleteJob({ queryClient, dispatch, id: _id })}
           >
@@ -46,9 +39,14 @@ const SingleJob = ({ job, status, role }) => {
           </button>
         </div>
       )}
-      <h3 className="font-semibold tracking-wide whitespace-nowrap overflow-hidden text-ellipsis text-2xl">
-        {profile}
-      </h3>
+      <div className="flex gap-x-2 items-center">
+        <h3 className="font-semibold tracking-wide whitespace-nowrap overflow-hidden text-ellipsis text-2xl">
+          {profile}
+        </h3>
+        <Link to={_id} className="scale-125">
+          <FiExternalLink />
+        </Link>
+      </div>
       <div className="flex justify-between gap-x-4">
         <a
           className="font-bold tracking-wider link max-w-[50%] whitespace-nowrap overflow-hidden text-ellipsis"
@@ -61,25 +59,31 @@ const SingleJob = ({ job, status, role }) => {
           {postedBy.name}
         </p>
       </div>
-      <p className="font-light overflow-hidden line-clamp-[7] sm:line-clamp-[8] text-ellipsis">
-        {description}
+      <p>
+        <span className="font-medium">Location:</span> {location}
       </p>
-      <p>Location: {location}</p>
-      <p>Package: {jobPackage} LPA</p>
+      <p>
+        <span className="font-medium">Package:</span> {jobPackage} LPA
+      </p>
+      <p className="font-medium">Key Skills:</p>
       <div className="flex flex-wrap gap-4">
         {keySkills.map((skill, idx) => (
           <span
             key={idx}
-            className="inline-block py-1 px-2 font-light rounded-lg text-sm bg-slate-200"
+            className="inline-block py-1 px-2 rounded-lg text-sm bg-slate-200 max-w-[40%] overflow-hidden whitespace-nowrap text-ellipsis"
           >
             {skill}
           </span>
         ))}
       </div>
-      <p>Openings: {openingsCount}</p>
-      <p>Applications Count: {applicationsCount}</p>
-      <p>Deadline: {new Date(deadline).toLocaleDateString()}</p>
-      <Link className="btn btn-md btn-link w-fit self-center hover:scale-125">
+      <p>
+        <span className="font-medium">Deadline:</span>{' '}
+        {new Date(deadline).toLocaleDateString()}
+      </p>
+      <Link
+        className="btn btn-md btn-link w-fit self-center hover:scale-125"
+        to={`${_id}`}
+      >
         View Details
       </Link>
       {role == 'student' &&
@@ -87,8 +91,8 @@ const SingleJob = ({ job, status, role }) => {
           <button className="w-fit self-center btn btn-sm btn-info">
             Applied
           </button>
-        ) : status == 'selected' ? (
-          <button className="w-fit self-center btn btn-sm btn-success">
+        ) : status == 'hired' ? (
+          <button className="w-fit self-center text-white btn btn-sm btn-success">
             Hired
           </button>
         ) : status == 'rejected' ? (
