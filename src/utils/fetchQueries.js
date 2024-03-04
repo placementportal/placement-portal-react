@@ -191,3 +191,44 @@ export function fetchCourseOptions() {
     },
   };
 }
+
+export function fetchStudents(filters) {
+  const url = `/admin/students`;
+
+  const queryKey = ['students'];
+  const { course, departments, batches } = filters;
+
+  if (course) queryKey.push(course);
+  if (departments) queryKey.push(...departments.split('|'));
+  if (batches) queryKey.push(...batches.split('|'));
+
+  return {
+    queryKey,
+    queryFn: async () => {
+      const { data } = await customFetch.get(url, { params: filters });
+      return data;
+    },
+  };
+}
+
+export function fetchCompanies() {
+  const url = `/admin/companies`;
+  return {
+    queryKey: ['companies'],
+    queryFn: async () => {
+      const { data } = await customFetch.get(url);
+      return data;
+    },
+  };
+}
+
+export function fetchSingleCompany(companyId) {
+  const url = `/admin/companies/${companyId}`;
+  return {
+    queryKey: [companyId],
+    queryFn: async () => {
+      const { data } = await customFetch.get(url);
+      return data;
+    },
+  };
+}

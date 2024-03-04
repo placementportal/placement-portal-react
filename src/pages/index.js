@@ -1,4 +1,5 @@
 export { default as Login } from './Login';
+export { default as Error } from './Error';
 export { default as PublicStudentProfile } from './PublicStudentProfile';
 
 export { default as AdminDashboard } from './AdminDashboard';
@@ -12,3 +13,8 @@ export { default as SingleJob } from './SingleJob';
 export { default as JobCreatePage } from './JobCreatePage';
 export { default as JobEditPage } from './JobEditPage';
 export { default as SingleJobApplications } from './SingleJobApplications';
+
+export { default as Students } from './AdminPages/Students';
+export { default as Companies } from './AdminPages/Companies';
+export { default as SingleCompany } from './AdminPages/SingleCompany';
+export { default as Courses } from './AdminPages/Courses'

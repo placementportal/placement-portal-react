@@ -9,6 +9,7 @@ const CheckboxInput = ({ label, name, options, defaultValues, emptyMsg }) => {
         {options.length ? (
           options.map((option) => {
             const { text, value } = option;
+            const checked = defaultValues?.includes(value);
             return (
               <label
                 key={value}
@@ -19,7 +20,7 @@ const CheckboxInput = ({ label, name, options, defaultValues, emptyMsg }) => {
                   value={value}
                   name={name}
                   className="checkbox"
-                  defaultChecked={defaultValues?.includes(value)}
+                  defaultChecked={checked}
                 />
                 <span className="label-text">{text}</span>
               </label>

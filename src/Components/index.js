@@ -1,4 +1,5 @@
 export { default as Navbar } from './Navbar';
+export { default as ErrorElement } from './ErrorElement';
 
 /* FORM INPUTS */
 export { default as FormInput } from './FormControls/FormInput';
@@ -34,3 +35,15 @@ export { default as CreateJobForm } from './CompanyAdmin/CreateJobForm';
 
 export { default as SingleJobApplication } from './CompanyAdmin/SingleJobApplication';
 export { default as ApplicationsContainer } from './CompanyAdmin/ApplicationsContainer';
+
+/* Admin */
+export { default as StudentsTable } from './SuperAdmin/StudentsTable';
+export { default as AddSingleStudent } from './SuperAdmin/AddSingleStudent';
+export { default as DepartmentsTab } from './SuperAdmin/DepartmentsTab';
+export { default as DepartmentModal } from './SuperAdmin/DepartmentModal';
+export { default as BatchTab } from './SuperAdmin/BatchTab';
+export { default as BatchModal } from './SuperAdmin/BatchModal';
+export { default as CourseModal } from './SuperAdmin/CourseModal';
+export { default as CompanyAdminCard } from './SuperAdmin/CompanyAdminCard';
+export { default as CompanyModal } from './SuperAdmin/CompanyModal';
+export { default as CompanyAdminModal } from './SuperAdmin/CompanyAdminModal';

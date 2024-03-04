@@ -31,14 +31,29 @@ const Navbar = ({ options }) => {
 
   function returnOptions() {
     return options.map((option) => {
-      const { id, href, text } = option;
-      return (
-        <li className="capitalize" key={id}>
-          <NavLink to={href} end>
-            {text}
-          </NavLink>
-        </li>
-      );
+      const { id, href, text, isParentMenu, subMenus } = option;
+
+      if (!isParentMenu)
+        return (
+          <li className="capitalize" key={id}>
+            <NavLink to={href} end>
+              {text}
+            </NavLink>
+          </li>
+        );
+      else
+        return (
+          <li key={id}>
+            <details>
+              <summary className="capitalize">{text}</summary>
+              <ul className="p-2 z-10">
+                {subMenus.map((menu) => (
+                  <li key={menu.id}>{menu.element}</li>
+                ))}
+              </ul>
+            </details>
+          </li>
+        );
     });
   }
 
@@ -80,7 +95,7 @@ const Navbar = ({ options }) => {
             className="btn btn-sm btn-primary"
             onClick={() => {
               // window.location.href = '/company-dashboard/create-job?action=create';
-              navigate('create-job')
+              navigate('create-job');
             }}
           >
             Create Job

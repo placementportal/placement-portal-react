@@ -26,6 +26,9 @@ import {
   fetchCourseOptions,
   fetchSingleJobQuery,
   fetchSingleJobApplicationsQuery,
+  fetchStudents,
+  fetchCompanies,
+  fetchSingleCompany,
 } from './fetchQueries';
 
 import { formatDate } from './jsUtils';
@@ -41,6 +44,9 @@ export {
   getBatchOptions,
 
   /* Fetch Queries */
+  fetchCompanies,
+  fetchSingleCompany,
+  fetchStudents,
   fetchJobsQuery,
   fetchCoursesQuery,
   fetchDeptQuery,

@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import {
   Login,
+  Error,
   StudentDashboard,
   AdminDashboard,
   CompanyDashboard,
@@ -15,9 +16,15 @@ import {
   JobCreatePage,
   JobEditPage,
   SingleJobApplications,
-} from './pages/index';
+  Students,
+  Courses,
+  Companies,
+  SingleCompany,
+} from './pages';
 
 import { store } from './store';
+
+import { ErrorElement } from './Components';
 
 import { action as loginAction } from './pages/Login';
 import { action as jobsAction } from './pages/Jobs';
@@ -26,16 +33,23 @@ import { action as editJobAction } from './pages/JobEditPage';
 import { action as studentDetailsAction } from './pages/StudentDetails';
 import { action as companyApplicationAction } from './pages/JobApplications';
 import { action as singleJobAction } from './pages/SingleJob';
+import { action as adminDBAction } from './pages/AdminDashboard';
+import { action as courseAction } from './pages/AdminPages/Courses';
+import { action as companyAction } from './pages/AdminPages/Companies';
 
 import { loader as loginLoader } from './pages/Login';
 import { loader as companyDBLoader } from './pages/CompanyDashboard';
 import { loader as studentDBloader } from './pages/StudentDetails';
+import { loader as adminDBLoader } from './pages/AdminDashboard';
 import { loader as jobsLoader } from './pages/Jobs';
 import { loader as jobsApplicationsLoader } from './pages/JobApplications';
 import { loader as studentProfileLoader } from './pages/PublicStudentProfile';
 import { loader as singleJobLoader } from './pages/SingleJob';
 import { loader as editJobLoader } from './pages/JobEditPage';
 import { loader as singleJobApplicationsLoader } from './pages/SingleJobApplications';
+import { loader as studentsLoader } from './pages/AdminPages/Students';
+import { loader as companyLoader } from './pages/AdminPages/Companies';
+import { loader as singleCompanyLoader } from './pages/AdminPages/SingleCompany';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -51,10 +65,12 @@ const router = createBrowserRouter([
     element: <Login />,
     action: loginAction,
     loader: loginLoader(store),
+    errorElement: <Error />,
   },
   {
     path: '/student-dashboard',
     element: <StudentDashboard />,
+    errorElement: <ErrorElement />,
     children: [
       {
         index: true,
@@ -85,11 +101,44 @@ const router = createBrowserRouter([
   {
     path: '/admin-dashboard',
     element: <AdminDashboard />,
+    loader: adminDBLoader(queryClient, store),
+    action: adminDBAction(queryClient, store),
+    errorElement: <ErrorElement />,
+    children: [
+      {
+        path: 'students',
+        element: <Students />,
+        loader: studentsLoader(queryClient, store),
+      },
+      {
+        path: 'courses',
+        element: <Courses />,
+        action: courseAction(queryClient, store),
+      },
+      {
+        path: 'companies',
+        children: [
+          {
+            path: '',
+            index: true,
+            element: <Companies />,
+            loader: companyLoader(queryClient, store),
+            action: companyAction(queryClient, store),
+          },
+          {
+            path: ':companyId',
+            element: <SingleCompany />,
+            loader: singleCompanyLoader(queryClient, store),
+          },
+        ],
+      },
+    ],
   },
   {
     path: '/company-dashboard',
     element: <CompanyDashboard />,
     loader: companyDBLoader(queryClient, store),
+    errorElement: <ErrorElement />,
     children: [
       {
         path: 'create-job',
