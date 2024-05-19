@@ -86,8 +86,8 @@ const TabContent = ({ jobType, jobId, arr, setModalData }) => {
                 <tr>
                   <th>Name</th>
                   <th>Cover Letter</th>
-                  <th>Portfolio</th>
                   <th>Resume</th>
+                  <th>Portfolio</th>
                   {(jobType === 'pending' || jobType === 'shortlisted') && (
                     <th>Action</th>
                   )}
