@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 import { setCurrentJobs, setJobApply } from '../features/jobs/jobsSlice';
 import { useQueryClient } from '@tanstack/react-query';
-import { customFetch, fetchJobsQuery } from '../utils';
+import { customFetch, fetchJobsQuery, getCompanyWebsite } from '../utils';
 
 const SingleJob = ({ job, status, role }) => {
   const {
@@ -50,7 +50,7 @@ const SingleJob = ({ job, status, role }) => {
       <div className="flex justify-between gap-x-4">
         <a
           className="font-bold tracking-wider link max-w-[50%] whitespace-nowrap overflow-hidden text-ellipsis"
-          href={company.website}
+          href={getCompanyWebsite(company.website)}
           target="_blank"
         >
           {company.name}

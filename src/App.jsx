@@ -20,6 +20,7 @@ import {
   Courses,
   Companies,
   SingleCompany,
+  StudentApplications,
 } from './pages';
 
 import { store } from './store';
@@ -40,6 +41,7 @@ import { action as companyAction } from './pages/AdminPages/Companies';
 import { loader as loginLoader } from './pages/Login';
 import { loader as companyDBLoader } from './pages/CompanyDashboard';
 import { loader as studentDBloader } from './pages/StudentDetails';
+import { loader as studentApplicationsLoader } from './pages/StudentApplications';
 import { loader as adminDBLoader } from './pages/AdminDashboard';
 import { loader as jobsLoader } from './pages/Jobs';
 import { loader as jobsApplicationsLoader } from './pages/JobApplications';
@@ -77,6 +79,12 @@ const router = createBrowserRouter([
         element: <StudentDetails />,
         loader: studentDBloader(queryClient, store),
         action: studentDetailsAction(queryClient, store),
+      },
+      {
+        path: 'applications',
+        element: <StudentApplications />,
+        loader: studentApplicationsLoader(queryClient, store),
+        // action: studentDetailsAction(queryClient, store),
       },
       {
         path: 'jobs',

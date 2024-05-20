@@ -107,7 +107,7 @@ const TabContent = ({ jobType, jobId, arr, setModalData }) => {
                     <tr key={_id}>
                       <td>
                         <a
-                          href={`applications/${_id}/students/${applicantId}`}
+                          href={`/company-dashboard/applications/${_id}/students/${applicantId}`}
                           className="link"
                         >
                           {applicantName}

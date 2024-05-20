@@ -11,3 +11,9 @@ export function formatDate(date) {
   }
   return year + '-' + month + '-' + day;
 }
+
+export function getCompanyWebsite(website) {
+  if (!website.startsWith('http://') && !website.startsWith('https://'))
+    return 'http://' + website;
+  return website;
+}

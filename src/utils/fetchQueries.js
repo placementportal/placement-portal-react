@@ -92,6 +92,16 @@ export function fetchStudentAchievements() {
   };
 }
 
+export function fetchStudentApplications() {
+  return {
+    queryKey: ['student_applications'],
+    queryFn: async () => {
+      const { data } = await customFetch.get('/student/applications');
+      return data;
+    },
+  };
+}
+
 export function fetchApplicationsQuery() {
   const url = `/company/applications`;
 

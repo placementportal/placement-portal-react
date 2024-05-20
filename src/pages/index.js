@@ -7,6 +7,7 @@ export { default as StudentDashboard } from './StudentDashboard';
 export { default as CompanyDashboard } from './CompanyDashboard';
 
 export { default as StudentDetails } from './StudentDetails';
+export { default as StudentApplications } from './StudentApplications';
 export { default as JobsPage } from './Jobs';
 export { default as JobApplications } from './JobApplications';
 export { default as SingleJob } from './SingleJob';

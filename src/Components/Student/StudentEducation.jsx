@@ -1,7 +1,7 @@
 import { Form } from 'react-router-dom';
 import { CurrentCourseEducation, PastScoreContainer } from '../';
 import { FormInput, NumberInput, SelectInput } from '../';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const StudentEducation = () => {
@@ -125,7 +125,24 @@ const StudentEducation = () => {
 };
 
 const PastScoreModal = ({ modalData }) => {
-  const { action, data, label } = modalData;
+  const { action, data, label, open } = modalData;
+
+  const [institute, setInstitute] = useState(data?.institute || '');
+  const [board, setBoard] = useState(data?.board || '');
+  const [stream, setStream] = useState(data?.stream || '');
+  const [year, setYear] = useState(data?.year || '');
+  const [score, setScore] = useState(data?.score || '');
+  const [scale, setScale] = useState(data?.scale || '');
+
+  useEffect(() => {
+    setInstitute(data?.institute || '');
+    setBoard(data?.board || '');
+    setStream(data?.stream || '');
+    setYear(data?.year || '');
+    setScore(data?.score || '');
+    setScale(data?.scale || '');
+  }, [open, label]);
+
   return (
     <dialog id="pastScoreModal" className="modal">
       <div className="modal-box pb-0">
@@ -143,28 +160,28 @@ const PastScoreModal = ({ modalData }) => {
             label="institute"
             name="institute"
             type="text"
-            defaultValue={data?.institute}
+            defaultValue={institute}
           />
 
           <FormInput
             label="board"
             name="board"
             type="text"
-            defaultValue={data?.board}
+            defaultValue={board}
           />
 
           <FormInput
             label="stream"
             name="stream"
             type="text"
-            defaultValue={data?.stream}
+            defaultValue={stream}
             isRequired={false}
           />
 
           <NumberInput
             label="year"
             name="year"
-            defaultValue={data?.year}
+            defaultValue={year}
             minValue={2000}
             maxValue={new Date().getFullYear()}
             step={1}
@@ -174,9 +191,9 @@ const PastScoreModal = ({ modalData }) => {
             <NumberInput
               label="score"
               name="score"
-              defaultValue={data?.score}
+              defaultValue={score}
               minValue={1}
-              maxValue={data?.scale === 'percentage' ? 100 : 10}
+              maxValue={scale === 'percentage' ? 100 : 10}
               step={0.01}
             />
 
@@ -187,7 +204,7 @@ const PastScoreModal = ({ modalData }) => {
                 { text: 'GPA', value: 'GPA' },
                 { text: '%', value: 'percentage' },
               ]}
-              defaultValue={data?.scale}
+              defaultValue={scale}
               changeFn={(e) => {
                 const value = e.currentTarget.value;
                 if (value === 'GPA') {

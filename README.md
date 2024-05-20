@@ -46,3 +46,7 @@ GitHub Repository: [here](https://github.com/placementportal/placement-portal)
 |![Jobs](./src/assets/snaps/Student_Jobs.gif)|
 |:--:|
 |*Student Jobs* |
+
+|![Applications](./src/assets/snaps/StudentApplications.png)|
+|:--:|
+|*Student Applications* |

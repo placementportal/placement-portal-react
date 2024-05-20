@@ -23,7 +23,7 @@ const PastScoreContainer = ({ type, label, data, setModalData }) => {
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => {
-                setModalData({ action: 'update', data, label });
+                setModalData({ action: 'update', data, label, open: true });
                 document.getElementById('pastScoreError').innerText = '';
                 document.getElementById('pastScoreModal').showModal();
               }}

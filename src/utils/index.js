@@ -29,9 +29,10 @@ import {
   fetchStudents,
   fetchCompanies,
   fetchSingleCompany,
+  fetchStudentApplications,
 } from './fetchQueries';
 
-import { formatDate } from './jsUtils';
+import { formatDate, getCompanyWebsite } from './jsUtils';
 
 export {
   customFetch,
@@ -64,7 +65,9 @@ export {
   fetchCourseOptions,
   fetchSingleJobQuery,
   fetchSingleJobApplicationsQuery,
+  fetchStudentApplications,
 
   /* JS utils */
   formatDate,
+  getCompanyWebsite,
 };
