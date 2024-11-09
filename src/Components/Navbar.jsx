@@ -35,7 +35,7 @@ const Navbar = ({ options }) => {
 
       if (!isParentMenu)
         return (
-          <li className="capitalize" key={id}>
+          <li className="capitalize text-black" key={id}>
             <NavLink to={href} end>
               {text}
             </NavLink>
@@ -45,7 +45,7 @@ const Navbar = ({ options }) => {
         return (
           <li key={id}>
             <details>
-              <summary className="capitalize">{text}</summary>
+              <summary className="capitalize text-black">{text}</summary>
               <ul className="p-2 z-10">
                 {subMenus.map((menu) => (
                   <li key={menu.id}>{menu.element}</li>
@@ -84,7 +84,7 @@ const Navbar = ({ options }) => {
             {returnOptions()}
           </ul>
         </div>
-        <p className="normal-case text-xl">Hello, {userName}</p>
+        <p className="normal-case text-black text-xl">Hello, {userName}</p>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{returnOptions()}</ul>
@@ -92,7 +92,7 @@ const Navbar = ({ options }) => {
       <div className="navbar-end">
         {userRole === 'company_admin' && (
           <button
-            className="btn btn-sm btn-primary"
+            className="btn btn-sm  btn-primary"
             onClick={() => {
               // window.location.href = '/company-dashboard/create-job?action=create';
               navigate('create-job');
@@ -101,7 +101,7 @@ const Navbar = ({ options }) => {
             Create Job
           </button>
         )}
-        <button className="p-4 hover:text-red-500" onClick={logout}>
+        <button className="p-4 hover:text-red-500 text-black" onClick={logout}>
           <FaPowerOff />
         </button>
       </div>

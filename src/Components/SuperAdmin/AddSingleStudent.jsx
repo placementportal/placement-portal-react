@@ -56,18 +56,20 @@ const AddSingleStudent = () => {
             name="name"
             type="text"
             defaultValue={student?.name}
+            labelColor='text-base-300'
           />
 
           {action === 'add' && (
             <>
-              <FormInput label="Email" name="email" type="email" />
+              <FormInput label="Email" name="email" type="email" labelColor='text-base-300' />
 
-              <FormInput label="Password" name="password" type="password" />
+              <FormInput label="Password" name="password" type="password"  labelColor='text-base-300'/>
 
               <FormInput
                 label="Confirm Password"
                 name="confirmPassword"
                 type="password"
+                labelColor='text-base-300'
               />
             </>
           )}
@@ -76,6 +78,7 @@ const AddSingleStudent = () => {
             label="Roll No"
             name="rollNo"
             type="text"
+            labelColor='text-base-300'
             defaultValue={student?.rollNo}
           />
 

@@ -70,7 +70,7 @@ const SingleJob = ({ job, status, role }) => {
         {keySkills.map((skill, idx) => (
           <span
             key={idx}
-            className="inline-block py-1 px-2 rounded-lg text-sm bg-slate-200 max-w-[40%] overflow-hidden whitespace-nowrap text-ellipsis"
+            className="inline-block py-1 px-2 rounded-lg text-sm text-base-300 bg-gray-500 max-w-[40%] overflow-hidden whitespace-nowrap text-ellipsis"
           >
             {skill}
           </span>

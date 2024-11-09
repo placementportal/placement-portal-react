@@ -6,7 +6,7 @@ const DateInput = ({
   minDate,
   maxDate,
   isRequired = true,
-  labelColor = 'black',
+  labelColor = 'text-base-300',
 }) => {
   const labelClass = 'font-medium capitalize ' + 'text-' + labelColor;
 

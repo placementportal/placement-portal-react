@@ -4,7 +4,7 @@ const MultipleInputs = ({
   type,
   defaultValue,
   manageFields,
-  labelColor = 'black',
+  labelColor = 'text-base-300',
 }) => {
   const labelClass = 'font-medium capitalize ' + 'text-' + labelColor;
 
