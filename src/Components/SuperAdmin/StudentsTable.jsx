@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData } from 'react-router-dom';
 import { FaEdit } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
@@ -6,7 +6,30 @@ import { setModalData } from '../../features/createStudentModal/studentModalData
 
 const StudentsTable = () => {
   const dispatch = useDispatch();
-  const { students } = useLoaderData();
+  const { students, page, limit, totalPages, course, departments, batches } =
+    useLoaderData();
+
+  function getPageLink(pageNum) {
+    if (pageNum < 1 || pageNum > totalPages)  {
+      return 
+    }
+
+    let link = `${window.location.pathname}?page=${pageNum}&limit=${limit}`;
+    if (course) {
+      link += `&course=${course}`
+    }
+    if (departments) {
+      link += `&departments=${departments}`
+    }
+    if (batches) {
+      link += `&batches=${batches}`
+    }
+
+    return link;
+  }
+
+  const prevLinkClass = page > 1 ? 'btn btn-sm btn-secondary' : 'btn btn-sm'
+  const nextLinkClass = page < totalPages ? 'btn btn-sm btn-secondary' : 'btn btn-sm'
 
   return (
     <div className="p-2">
@@ -51,6 +74,14 @@ const StudentsTable = () => {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-between p-2">
+          <Link to={getPageLink(page - 1)} className={prevLinkClass}>
+            Prev
+          </Link>
+          <Link to={getPageLink(page + 1)} className={nextLinkClass}>
+            Next
+          </Link>
+        </div>
       </div>
     </div>
   );

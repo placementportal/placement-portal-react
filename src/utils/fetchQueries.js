@@ -206,11 +206,13 @@ export function fetchStudents(filters) {
   const url = `/admin/students`;
 
   const queryKey = ['students'];
-  const { course, departments, batches } = filters;
+  const { course, departments, batches, page, limit } = filters;
 
   if (course) queryKey.push(course);
   if (departments) queryKey.push(...departments.split('|'));
   if (batches) queryKey.push(...batches.split('|'));
+  if (page) queryKey.push(page);
+  if (limit) queryKey.push(limit);
 
   return {
     queryKey,

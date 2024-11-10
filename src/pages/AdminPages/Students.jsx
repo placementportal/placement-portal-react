@@ -16,19 +16,23 @@ export const loader = (queryClient, store) => {
     const url = new URL(request.url);
     const params = new URLSearchParams(url.search);
 
-    const query = {};
+    const query = {
+      page: 1, limit: 10
+    };
 
     if (params.size) {
+      query.page = parseInt(params.get('page')) || 1;
+      query.limit = parseInt(params.get('limit')) || 10;
       query.course = params.get('course');
       query.departments = params.getAll('departments')?.join('|');
       query.batches = params.getAll('batches')?.join('|');
     }
 
     try {
-      const { students } = await queryClient.ensureQueryData(
+      const { students, totalPages } = await queryClient.ensureQueryData(
         fetchStudents(query)
       );
-      return { students };
+      return { students, totalPages, ...query };
     } catch (error) {
       const errorMessage =
         error?.response?.data?.message || 'Failed to fetch students!';
