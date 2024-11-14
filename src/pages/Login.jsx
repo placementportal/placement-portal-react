@@ -52,7 +52,7 @@ const Login = () => {
           label="password"
           labelColor="white"
         />
-        <button type="submit" className="btn btn-success">
+        <button type="submit" className="btn btn-success text-white text-lg">
           Login
         </button>
       </Form>

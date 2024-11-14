@@ -50,8 +50,12 @@ const Students = () => {
 
   return (
     <div className="p-4">
+      <h3 className="my-2 underline text-2xl text-center tracking-wide font-medium">
+        Students
+      </h3>
+
       {/* FILTERS */}
-      <Form className="flex flex-col gap-y-4">
+      <Form className="flex flex-col">
         <div className="px-4 flex flex-wrap justify-between">
           <div>
             <SelectInput

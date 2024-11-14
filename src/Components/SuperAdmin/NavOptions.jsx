@@ -30,10 +30,10 @@ export function getOptions(dispatch) {
             </button>
           ),
         },
-        {
-          id: '2_3',
-          element: <button>Add Students by file</button>,
-        },
+        // {
+        //   id: '2_3',
+        //   element: <button>Add Students by file</button>,
+        // },
       ],
     },
     {

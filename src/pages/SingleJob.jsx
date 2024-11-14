@@ -4,11 +4,16 @@ import { useQueryClient } from '@tanstack/react-query';
 import { FiExternalLink } from 'react-icons/fi';
 
 import { toast } from 'react-toastify';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit, FaExternalLinkAlt } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
 import Markdown from 'react-markdown';
 
-import { customFetch, fetchJobsQuery, fetchSingleJobQuery } from '../utils';
+import {
+  customFetch,
+  fetchJobsQuery,
+  fetchSingleJobQuery,
+  getCompanyWebsite,
+} from '../utils';
 import {
   resetJobApply,
   setCurrentJobs,
@@ -152,11 +157,11 @@ const SingleJob = () => {
       </div>
 
       <a
-        className="font-bold tracking-wider link max-w-[50%] "
-        href={company.website}
+        className="font-bold flex gap-2 items-center tracking-wider link max-w-[50%] "
+        href={company?.website ? getCompanyWebsite(company.website) : ''}
         target="_blank"
       >
-        {company.name}
+        {company.name} <FaExternalLinkAlt />
       </a>
 
       <div className="flex flex-wrap gap-x-16 gap-y-4">
@@ -172,7 +177,7 @@ const SingleJob = () => {
           <p>
             <span className="font-medium">Openings Count:</span> {openingsCount}
           </p>
-          <p className='flex items-center gap-x-2'>
+          <p className="flex items-center gap-x-2">
             <span className="font-medium">Applications Count:</span>{' '}
             {applicationsCount}{' '}
             {role === 'company_admin' && (
@@ -220,7 +225,7 @@ const SingleJob = () => {
           }%] flex flex-col gap-y-2`}
         >
           <p className="font-medium">Key Skills:</p>
-          <div className="mt-4 flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4">
             {keySkills.map((skill, idx) => (
               <span
                 key={idx}

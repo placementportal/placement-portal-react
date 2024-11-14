@@ -95,7 +95,7 @@ const CoursePage = () => {
     <div className="p-4">
       <DepartmentModal modalData={departmentModalData} />
       <BatchModal modalData={batchModalData} />
-      <h3 className="ml-8 mt-5 text-2xl tracking-wide font-medium">Courses</h3>
+      <h3 className="text-2xl text-center underline tracking-wide font-medium">Courses</h3>
       <div className="mt-4">
         {arr.map((course) => {
           const { courseId, courseName, batches, departments } = course;

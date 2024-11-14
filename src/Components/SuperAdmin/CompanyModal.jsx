@@ -27,32 +27,32 @@ const CompanyModal = () => {
             label="company name"
             name="companyName"
             type="text"
-            defaultValue={company?.name}
+            defaultValue={company?.name || ''}
           />
 
           <FormInput
             label="company email"
             name="companyEmail"
             type="email"
-            defaultValue={company?.email}
+            defaultValue={company?.email || ''}
           />
 
           <FormInput
             label="website"
             name="website"
             type="url"
-            defaultValue={company?.website}
+            defaultValue={company?.website || ''}
           />
 
           <Textarea
             label="about"
             name="about"
             placeholder="Write a bit about company..."
-            defaultValue={company?.about}
+            defaultValue={company?.about || ''}
           />
 
           <div id="companyFormError" className="text-red-500"></div>
-          
+
           <button
             type="submit"
             className="btn btn-success text-white capitalize self-center btn-sm h-9 px-4"

@@ -67,11 +67,11 @@ const DepartmentContainer = ({ department, courseId, setModalData }) => {
         >
           <FaEdit />
         </button>
-        <button
+        {/* <button
           onClick={() => handleDeleteDepartment({ queryClient, department })}
         >
           <FaTrash />
-        </button>
+        </button> */}
       </div>
     </div>
   );

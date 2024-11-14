@@ -11,7 +11,7 @@ import { useQueryClient } from '@tanstack/react-query';
 const SkillsTab = () => {
   const { skills, type } = useSelector((state) => state?.studentProfileState);
 
-  const [modalData, setModalData] = useState({ action: 'create' });
+  const [modalData, setModalData] = useState({ action: 'create', skill: '' });
   return (
     <>
       <input
@@ -30,7 +30,7 @@ const SkillsTab = () => {
             <button
               className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
               onClick={() => {
-                setModalData({ action: 'create' });
+                setModalData({ action: 'create', skill: "" });
                 document.getElementById('skillModal').showModal();
                 document.getElementById('skillFormError').innerText = '';
               }}
@@ -100,6 +100,7 @@ const SkillModal = ({ modalData }) => {
         <Form
           method="POST"
           className="mt-2 flex flex-col gap-4"
+          id="skillForm"
           name="skillForm"
         >
           {action === 'update' && (
@@ -109,7 +110,7 @@ const SkillModal = ({ modalData }) => {
             label="skill"
             name={action === 'create' ? 'skill' : 'updatedSkill'}
             type="text"
-            defaultValue={skill}
+            defaultValue={action === 'update' ? skill : ''}
           />
 
           <div id="skillFormError" className="text-red-500"></div>

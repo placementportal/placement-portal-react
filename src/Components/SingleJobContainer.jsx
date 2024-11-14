@@ -40,11 +40,10 @@ const SingleJob = ({ job, status, role }) => {
         </div>
       )}
       <div className="flex gap-x-2 items-center">
-        <h3 className="font-semibold tracking-wide whitespace-nowrap overflow-hidden text-ellipsis text-2xl">
+        <Link to={_id} className="text-success overflow-hidden">
+          <h3 className="font-semibold tracking-wide whitespace-nowrap overflow-hidden text-ellipsis text-2xl">
           {profile}
         </h3>
-        <Link to={_id} className="scale-125">
-          <FiExternalLink />
         </Link>
       </div>
       <div className="flex justify-between gap-x-4">
@@ -81,7 +80,7 @@ const SingleJob = ({ job, status, role }) => {
         {new Date(deadline).toLocaleDateString()}
       </p>
       <Link
-        className="btn btn-md btn-link w-fit self-center hover:scale-125"
+        className="btn btn-sm btn-success text-white w-fit self-center hover:scale-110"
         to={`${_id}`}
       >
         View Details

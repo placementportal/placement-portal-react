@@ -12,7 +12,7 @@ const AchievementsTab = () => {
   const { achievements, type } = useSelector(
     (state) => state?.studentProfileState
   );
-  const [modalData, setModalData] = useState({ action: 'create' });
+  const [modalData, setModalData] = useState({ action: 'create', achievement: '' });
   return (
     <>
       <input
@@ -30,7 +30,7 @@ const AchievementsTab = () => {
             <button
               className="flex items-center tracking-wide h-8 gap-x-2 font-semibold bg-green-500 px-2 rounded text-white hover:shadow-lg"
               onClick={() => {
-                setModalData({ action: 'create' });
+                setModalData({ action: 'create', achievement: '' });
                 document.getElementById('achievementModal').showModal();
                 document.getElementById('achievementFormError').innerText = '';
               }}
@@ -102,12 +102,13 @@ const AchievementModal = ({ modalData }) => {
           method="POST"
           className="mt-2 flex flex-col gap-4"
           name="achievementForm"
+          id="achievementForm"
         >
           {action === 'update' && (
             <input
               type="text"
               name="oldAchievement"
-              defaultValue={achievement}
+              defaultValue={achievement || ''}
               hidden
             />
           )}
@@ -115,7 +116,7 @@ const AchievementModal = ({ modalData }) => {
             label="achievement"
             name={action === 'create' ? 'achievement' : 'updatedAchievement'}
             type="text"
-            defaultValue={achievement}
+            defaultValue={action === 'update' ? achievement : ''}
           />
 
           <div id="achievementFormError" className="text-red-500"></div>

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const Textarea = ({
   label,
   name,
@@ -16,7 +18,7 @@ const Textarea = ({
         placeholder={placeholder}
         name={name}
         defaultValue={defaultValue}
-      ></textarea>
+      />
     </div>
   );
 };

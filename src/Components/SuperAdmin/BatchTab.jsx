@@ -65,9 +65,9 @@ const BatchContainer = ({ batch, setModalData, courseId }) => {
         >
           <FaEdit />
         </button>
-        <button onClick={() => handleDeletebatch({ queryClient, batch })}>
+        {/* <button onClick={() => handleDeletebatch({ queryClient, batch })}>
           <FaTrash />
-        </button>
+        </button> */}
       </div>
     </div>
   );

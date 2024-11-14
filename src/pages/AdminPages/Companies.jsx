@@ -57,97 +57,104 @@ export const loader = (queryClient, store) => {
 const Companies = () => {
   const dispatch = useDispatch();
   const { companies } = useLoaderData();
-  if (!companies)
-    return <h3 className="p-8 text-2xl capitalize">no companies found</h3>;
 
   return (
     <div className="p-4">
+      <h3 className="mb-4 text-2xl text-center underline tracking-wide font-medium">
+        Companies
+      </h3>
       <CompanyAdminModal />
-      <div className="max-h-[90vh] overflow-auto">
-        <table className="table text-center table-pin-rows">
-          {/* head */}
-          <thead className="text-base font-normal">
-            <tr>
-              <th>Company</th>
-              <th>Website</th>
-              <th>Email</th>
-              <th>Jobs Posted</th>
-              <th>Openings Created</th>
-              <th>Candidates Hired</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {companies.map((company) => (
-              <tr key={company._id}>
-                <td>
-                  <Link
-                    to={`${company._id}`}
-                    className="link link-primary flex gap-x-2 items-center"
-                  >
-                    {company.name} <FaExternalLinkAlt />
-                  </Link>
-                </td>
-                <td>
-                  <Link
-                    to={company?.website}
-                    target="_blank"
-                    className="link link-primary flex gap-x-2 items-center"
-                  >
-                    Website <FaExternalLinkAlt />
-                  </Link>
-                </td>
-                <td>{company.email}</td>
-                <td>{company?.jobsPosted || 0}</td>
-                <td>{company?.openingsCreated || 0}</td>
-                <td>{company?.candidatesHired || 0}</td>
-                <td className="flex gap-x-2">
-                  <div className="dropdown dropdown-end">
-                    <div tabIndex={0} role="button" className="m-1">
-                      <FaEdit />
-                    </div>
-                    <ul
-                      tabIndex={0}
-                      className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-                    >
-                      <li>
-                        <button
-                          onClick={() => {
-                            dispatch(setModalData({ company }));
-                            document.getElementById('companyModal').showModal();
-                          }}
-                        >
-                          Edit company
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          onClick={() => {
-                            dispatch(
-                              resetModalData({
-                                companyId: company._id,
-                                companyName: company.name,
-                              })
-                            );
-                            document
-                              .getElementById('companyAdminModal')
-                              .showModal();
-                          }}
-                        >
-                          Add Admin
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                  {/* </button> */}
-                  <button className="text-lg">
-                    <MdDelete />
-                  </button>
-                </td>
+      <div>
+        {companies.length == 0 ? (
+          <h3 className="p-2 text-center font-bold">No companies found!</h3>
+        ) : (
+          <table className="table text-center table-pin-rows">
+            {/* head */}
+            <thead className="text-base font-normal">
+              <tr>
+                <th>Name</th>
+                <th>Website</th>
+                <th>Email</th>
+                <th>Jobs Posted</th>
+                <th>Openings Created</th>
+                <th>Candidates Hired</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {companies.map((company) => (
+                <tr key={company._id}>
+                  <td>
+                    <Link
+                      to={`${company._id}`}
+                      className="link link-success flex gap-x-2 items-center"
+                    >
+                      {company.name}
+                    </Link>
+                  </td>
+                  <td>
+                    <Link
+                      to={company?.website}
+                      target="_blank"
+                      className="link link-secondary flex gap-x-2 items-center"
+                    >
+                      Website <FaExternalLinkAlt />
+                    </Link>
+                  </td>
+                  <td>{company.email}</td>
+                  <td>{company?.jobsPosted || 0}</td>
+                  <td>{company?.openingsCreated || 0}</td>
+                  <td>{company?.candidatesHired || 0}</td>
+                  <td className="flex gap-x-2">
+                    <div className="dropdown dropdown-end">
+                      <div tabIndex={0} role="button" className="m-1">
+                        <FaEdit />
+                      </div>
+                      <ul
+                        tabIndex={0}
+                        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                      >
+                        <li>
+                          <button
+                            onClick={() => {
+                              dispatch(setModalData({ company }));
+                              document
+                                .getElementById('companyModal')
+                                .showModal();
+                            }}
+                          >
+                            Edit company
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            onClick={() => {
+                              dispatch(
+                                resetModalData({
+                                  companyId: company._id,
+                                  companyName: company.name,
+                                })
+                              );
+                              document
+                                .getElementById('companyAdminModal')
+                                .showModal();
+                            }}
+                          >
+                            Add Admin
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                    {/* </button> */}
+                    {/* <button className="text-lg">
+                      <MdDelete />
+                    </button> */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

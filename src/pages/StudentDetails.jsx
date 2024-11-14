@@ -274,6 +274,7 @@ export const action = (queryClient, store) => {
         store.dispatch(setSkills({ skills }));
         document.getElementById('skillModal').close();
         toast.success('Skill created successfully!');
+        document.getElementById("skillForm").reset();
         return redirect('/student-dashboard/');
       } catch (error) {
         console.log(error);
@@ -294,6 +295,7 @@ export const action = (queryClient, store) => {
         store.dispatch(setSkills({ skills }));
         document.getElementById('skillModal').close();
         toast.success('Skill updated successfully!');
+        document.getElementById("skillForm").reset();
         return redirect('/student-dashboard/');
       } catch (error) {
         console.log(error);
@@ -316,6 +318,7 @@ export const action = (queryClient, store) => {
         store.dispatch(setAchievements({ achievements }));
         document.getElementById('achievementModal').close();
         toast.success('Achievement created successfully!');
+        document.getElementById("achievementForm").reset();
         return redirect('/student-dashboard/');
       } catch (error) {
         console.log(error);
@@ -339,6 +342,7 @@ export const action = (queryClient, store) => {
         store.dispatch(setAchievements({ achievements }));
         document.getElementById('achievementModal').close();
         toast.success('Achievement updated successfully!');
+        document.getElementById("achievementForm").reset();
         return redirect('/student-dashboard/');
       } catch (error) {
         console.log(error);
